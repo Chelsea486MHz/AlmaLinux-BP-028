@@ -25,7 +25,7 @@ firstboot --disable
 zerombr
 ignoredisk --only-use=sda
 clearpart --all --initlabel --drives=sda
-part	/boot		--fstype=ext4	--ondisk=sda	--size=1024
+part	/boot		--fstype=xfs	--ondisk=sda	--size=1024
 part	/boot/efi       --fstype=efi	--ondisk=sda	--size=1024
 part    swap 				--ondisk=sda	--size=4096
 part    pv.01				--ondisk=sda	--size=1	--grow
