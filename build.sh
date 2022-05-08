@@ -189,9 +189,9 @@ sed -i "s/%NEW_ISO_LABEL%/${NEW_ISO_LABEL}/g" ${NEW_ISO_ROOT}/isolinux/isolinux.
 sed -i "s/%PATH_KICKSTART%/${PATH_KICKSTART}/g" ${NEW_ISO_ROOT}/isolinux/isolinux.cfg
 sed -i "s/%ALMA_VERSION%/${ALMA_RELEASE}/g" ${NEW_ISO_ROOT}/isolinux/isolinux.cfg
 
-sed -i "s/%NEW_ISO_LABEL%/${NEW_ISO_LABEL}/g" ${NEW_ISO_ROOT}/isolinux/grub.cfg
-sed -i "s/%PATH_KICKSTART%/${PATH_KICKSTART}/g" ${NEW_ISO_ROOT}/isolinux/grub.cfg
-sed -i "s/%ALMA_VERSION%/${ALMA_RELEASE}/g" ${NEW_ISO_ROOT}/isolinux/grub.cfg
+sed -i "s/%NEW_ISO_LABEL%/${NEW_ISO_LABEL}/g" ${NEW_ISO_ROOT}/isolinux/grub.conf
+sed -i "s/%PATH_KICKSTART%/${PATH_KICKSTART}/g" ${NEW_ISO_ROOT}/isolinux/grub.conf
+sed -i "s/%ALMA_VERSION%/${ALMA_RELEASE}/g" ${NEW_ISO_ROOT}/isolinux/grub.conf
 
 echo -e "${TEXT_INFO} Configuring GPT/UEFI boot..."
 sed -i "s/%NEW_ISO_LABEL%/${NEW_ISO_LABEL}/g" ${NEW_ISO_ROOT}/EFI/BOOT/grub.cfg
