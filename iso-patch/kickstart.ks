@@ -77,12 +77,13 @@ scap-security-guide
 passwd --expire root
 passwd --expire admin
 systemctl enable dnf-automatic.timer                                            # Addresses ANSSI-BP-028-R08
-echo 'vfat' > /etc/sysctl.d/vfat.conf                                           # Addresses ANSSI-BP-028-R24
 echo 'kernel.modules_disabled = 1' > /etc/sysctl.d/ANSSI-BP-028-R24.conf        # Addresses ANSSI-BP-028-R24
 sed -i 's/#ClientAliveInterval 0/ClientAliveInterval 60/g' /etc/ssh/sshd_config # Addresses ANSSI-BP-028-R29
 sed -i 's/#ClientAliveCountMax/ClientAliveCountMax/g' /etc/ssh/sshd_config      # Addresses ANSSI-BP-028-R29
 chown root:wheel /usr/bin/sudo                                                  # Addresses ANSSI-BP-028-R57
 setsebool -P deny_execmem off                                                   # Addresses ANSSI-BP-028-R67
+/usr/bin/eject -i 0
+/usr/bin/eject -r
 %end
 
 # Enable the following services
