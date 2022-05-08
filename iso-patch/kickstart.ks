@@ -25,17 +25,21 @@ firstboot --disable
 zerombr
 ignoredisk --only-use=sda
 clearpart --all --initlabel --drives=sda
-part    /boot           --fstype=ext4 --ondisk=sda --size=512
-part	/               --fstype=ext4 --ondisk=sda --size=8192
-part	/home           --fstype=ext4 --ondisk=sda --size=1024
-part	/tmp            --fstype=ext4 --ondisk=sda --size=1024
-part	/usr            --fstype=ext4 --ondisk=sda --size=8192
-part	/var            --fstype=ext4 --ondisk=sda --size=8192
-part	/var/tmp        --fstype=ext4 --ondisk=sda --size=4096
-part	/var/log        --fstype=ext4 --ondisk=sda --size=4096
-part	/var/log/audit  --fstype=ext4 --ondisk=sda --size=4096
-part	/opt            --fstype=ext4 --ondisk=sda --size=1024
-part	/srv            --fstype=ext4 --ondisk=sda --size=1 --grow
+part	/boot		--fstype=ext4	--ondisk=sda	--size=1024
+part	/boot/efi       --fstype=efi	--ondisk=sda	--size=1024
+part    swap 				--ondisk=sda	--size=4096
+part    pv.01				--ondisk=sda	--size=1	--grow
+volgroup vg_root pv.01
+logvol  /               --vgname=vg_root --size=4096 --name=lv_root
+logvol  /home           --vgname=vg_root --size=4096 --name=lv_home
+logvol  /usr            --vgname=vg_root --size=4096 --name=lv_usr
+logvol  /tmp            --vgname=vg_root --size=4096 --name=lv_tmp
+logvol  /var            --vgname=vg_root --size=4096 --name=lv_var
+logvol  /var/tmp        --vgname=vg_root --size=4096 --name=lv_var_tmp
+logvol  /var/log        --vgname=vg_root --size=4096 --name=lv_var_log
+logvol  /var/log/audit  --vgname=vg_root --size=4096 --name=lv_var_log_audit
+logvol  /srv            --vgname=vg_root --size=4096 --name=lv_srv
+logvol  /opt            --vgname=vg_root --size=4096 --name=lv_opt
 
 # Locale
 lang en_US.UTF-8
@@ -46,9 +50,9 @@ timezone Etc/UTC --isUtc
 selinux --enforcing
 
 # Enable DHCP, set hostname
-# Allow SSH and SENPAI through the firewall (SENPAI uses port 1337)
+# Allow SSH and Cockpit
 network  --bootproto=dhcp --device=enp0s3 --onboot=on --activate --hostname=alma.lan
-firewall --enabled --ssh --port=1337
+firewall --enabled --ssh --port=9090
 
 # User config
 rootpw root
@@ -62,7 +66,9 @@ repo --name=ondisk --baseurl=file:///run/install/sources/mount-0000-cdrom/ondisk
 scap-security-guide
 %end
 
-# OpenSCAP 
+
+
+# OpenSCAP parameters
 %addon org_fedora_oscap
     content-type = scap-security-guide
     content-path = %SCAP_CONTENT%
@@ -75,15 +81,39 @@ scap-security-guide
 %post --erroronfail
 passwd --expire root
 passwd --expire admin
+
+# Set the banner !
+echo '' > /etc/issue
+echo ' '                                                      >> /etc/issue
+echo '     ___    __                __    _                 ' >> /etc/issue
+echo '    /   |  / /___ ___  ____ _/ /   (_)___  __  ___  __' >> /etc/issue
+echo '   / /| | / / __ `__ \/ __ `/ /   / / __ \/ / / / |/_/' >> /etc/issue
+echo '  / ___ |/ / / / / / / /_/ / /___/ / / / / /_/ />  <  ' >> /etc/issue
+echo ' /_/  |_/_/_/ /_/ /_/\__,_/_____/_/_/ /_/\__,_/_/|_|  ' >> /etc/issue
+echo '   ANSSI-BP-028 COMPLIANT'                              >> /etc/issue
+echo ''                                                       >> /etc/issue
+
+# Set it for SSH and cockpit
+sed -i 's/#Banner none/Banner \/etc\/issue/g'
+cp /etc/issue /etc/issue.cockpit
+
+# ANSSI-BP-028 compliance not brought in by OpenSCAP
 systemctl enable dnf-automatic.timer                                            # Addresses ANSSI-BP-028-R08
 echo 'kernel.modules_disabled = 1' > /etc/sysctl.d/ANSSI-BP-028-R24.conf        # Addresses ANSSI-BP-028-R24
 sed -i 's/#ClientAliveInterval 0/ClientAliveInterval 60/g' /etc/ssh/sshd_config # Addresses ANSSI-BP-028-R29
 sed -i 's/#ClientAliveCountMax/ClientAliveCountMax/g' /etc/ssh/sshd_config      # Addresses ANSSI-BP-028-R29
 chown root:wheel /usr/bin/sudo                                                  # Addresses ANSSI-BP-028-R57
 setsebool -P deny_execmem off                                                   # Addresses ANSSI-BP-028-R67
-/usr/bin/eject -i 0
-/usr/bin/eject -r
-%end
 
 # Enable the following services
-services --enabled=sshd
+systemctl enable sshd
+systemctl enable cockpit
+
+# Eject the disk
+/usr/bin/eject -i 0
+/usr/bin/eject -r
+
+# Reboot
+reboot
+
+%end
