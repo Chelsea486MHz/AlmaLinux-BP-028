@@ -48,7 +48,7 @@ selinux --enforcing
 
 # Enable DHCP, set hostname
 # Allow SSH and SENPAI through the firewall (SENPAI uses port 1337)
-network  --bootproto=dhcp --device=enp0s3 --onboot=on --activate --hostname=worker.sen
+network  --bootproto=dhcp --device=enp0s3 --onboot=on --activate --hostname=alma.lan
 firewall --enabled --ssh --port=1337
 
 # User config
@@ -56,13 +56,11 @@ rootpw root
 user --name=admin --password=admin --groups=wheel
 
 # Select the following packages for installation
-repo --name=senpaimd --baseurl=file:///run/install/sources/mount-0000-cdrom/senpaimd
-repo --name=senpai-iso-extra --baseurl=file:///run/install/sources/mount-0000-cdrom/senpai-iso-extra
+repo --name=ondisk --baseurl=file:///run/install/sources/mount-0000-cdrom/ondisk
 %packages --excludedocs
 @^minimal-environment
 @standard
 scap-security-guide
-senpai
 %end
 
 # OpenSCAP 
