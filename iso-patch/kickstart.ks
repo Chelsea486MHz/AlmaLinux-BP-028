@@ -26,7 +26,6 @@ zerombr
 ignoredisk --only-use=sda
 clearpart --all --initlabel --drives=sda
 part    /boot           --fstype=ext4 --ondisk=sda --size=512
-part    /boot/efi       --fstype=vfat --ondisk=sda --size=512
 part	/               --fstype=ext4 --ondisk=sda --size=8192
 part	/home           --fstype=ext4 --ondisk=sda --size=1024
 part	/tmp            --fstype=ext4 --ondisk=sda --size=1024
