@@ -25,21 +25,21 @@ firstboot --disable
 zerombr
 ignoredisk --only-use=sda
 clearpart --all --initlabel --drives=sda
-part	/boot		--fstype=xfs	--ondisk=sda	--size=1024		--fsoptions=nosuid,nodev,noexec,noauto
-part	/boot/efi       --fstype=efi	--ondisk=sda	--size=1024		--fsoptions=nosuid,nodev,noexec,noauto
-part	/tmp		--fstype=tmpfs			--size=4096		--fsoptions=nosuid,nodev,noexec
+part	/boot		--fstype=xfs	--ondisk=sda	--size=1024		--fsoptions="nosuid,nodev,noexec,noauto"
+part	/boot/efi       --fstype=efi	--ondisk=sda	--size=1024		--fsoptions="nosuid,nodev,noexec,noauto"
+part	/tmp		--fstype=tmpfs			--size=4096		--fsoptions="nosuid,nodev,noexec"
 part    swap 				--ondisk=sda	--size=4096
 part    pv.01				--ondisk=sda	--size=1		--grow
 volgroup vg_root pv.01
 logvol  /               --vgname=vg_root --size=4096 --name=lv_root
-logvol  /home           --vgname=vg_root --size=4096 --name=lv_home		--fsoptions=nosuid,nodev,noexec
-logvol  /usr            --vgname=vg_root --size=4096 --name=lv_usr		--fsoptions=nodev
-logvol  /var            --vgname=vg_root --size=4096 --name=lv_var		--fsoptions=nosuid,nodev,noexec
-logvol  /var/tmp        --vgname=vg_root --size=4096 --name=lv_var_tmp		--fsoptions=nosuid,nodev,noexec
-logvol  /var/log        --vgname=vg_root --size=4096 --name=lv_var_log		--fsoptions=nosuid,nodev,noexec
-logvol  /var/log/audit  --vgname=vg_root --size=4096 --name=lv_var_log_audit	--fsoptions=nosuid,nodev,noexec
-logvol  /srv            --vgname=vg_root --size=4096 --name=lv_srv		--fsoptions=nosuid,nodev,noexec,ro
-logvol  /opt            --vgname=vg_root --size=4096 --name=lv_opt		--fsoptions=nosuid,nodev,ro
+logvol  /home           --vgname=vg_root --size=4096 --name=lv_home		--fsoptions="nosuid,nodev,noexec"
+logvol  /usr            --vgname=vg_root --size=4096 --name=lv_usr		--fsoptions="nodev"
+logvol  /var            --vgname=vg_root --size=4096 --name=lv_var		--fsoptions="nosuid,nodev,noexec"
+logvol  /var/tmp        --vgname=vg_root --size=4096 --name=lv_var_tmp		--fsoptions="nosuid,nodev,noexec"
+logvol  /var/log        --vgname=vg_root --size=4096 --name=lv_var_log		--fsoptions="nosuid,nodev,noexec"
+logvol  /var/log/audit  --vgname=vg_root --size=4096 --name=lv_var_log_audit	--fsoptions="nosuid,nodev,noexec"
+logvol  /srv            --vgname=vg_root --size=4096 --name=lv_srv		--fsoptions="nosuid,nodev,noexec,ro"
+logvol  /opt            --vgname=vg_root --size=4096 --name=lv_opt		--fsoptions="nosuid,nodev,ro"
 
 # Locale
 lang en_US.UTF-8
