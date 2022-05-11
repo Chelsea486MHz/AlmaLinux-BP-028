@@ -89,7 +89,6 @@ openssh-server
 
 # Set the TTY banner
 echo '' > /etc/issue
-echo ' '                                                      >> /etc/issue
 echo '     ___    __                __    _                 ' >> /etc/issue
 echo '    /   |  / /___ ___  ____ _/ /   (_)___  __  ___  __' >> /etc/issue
 echo '   / /| | / / __ `__ \/ __ `/ /   / / __ \/ / / / |/_/' >> /etc/issue
@@ -102,14 +101,17 @@ echo ''                                                       >> /etc/issue
 sed -i 's/#Banner none/Banner \/etc\/issue/g'
 cp /etc/issue /etc/issue.cockpit
 
+# Remove the cockpit message
+rm -f /etc/motd.d/cockpit
+rm -f /etc/issue.d/cockpit
+
 # ANSSI-BP-028 compliance not brought in by OpenSCAP
 systemctl enable dnf-automatic.timer                                            # Addresses ANSSI-BP-028-R08
 echo 'kernel.modules_disabled = 1' > /etc/sysctl.d/ANSSI-BP-028-R24.conf        # Addresses ANSSI-BP-028-R24
-sed -i 's/#ClientAliveInterval 0/ClientAliveInterval 60/g' /etc/ssh/sshd_config # Addresses ANSSI-BP-028-R29
-sed -i 's/#ClientAliveCountMax/ClientAliveCountMax/g' /etc/ssh/sshd_config      # Addresses ANSSI-BP-028-R29
 chown root:wheel /usr/bin/sudo                                                  # Addresses ANSSI-BP-028-R57
 
 # Addresses ANSSI-BP-028-R67
+setsebool -P deny_execmem=on
 setsebool -P allow_execheap=off
 setsebool -P allow_execmem=off
 setsebool -P allow_execstack=off
