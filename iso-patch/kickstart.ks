@@ -6,7 +6,10 @@
 # (it's fast)
 text
 cdrom
-bootloader --append="rhgb quiet crashkernel=auto"
+
+# Manually load the vfat module
+# Dynamic module loading is disabled by sysctl config as required in ANSSI-BP-028-R24
+bootloader --append="rhgb quiet crashkernel=auto vfat"
 
 # Automatically accept EULA
 eula --agreed
@@ -25,21 +28,21 @@ firstboot --disable
 zerombr
 ignoredisk --only-use=sda
 clearpart --all --initlabel --drives=sda
-part	/boot		--fstype=xfs	--ondisk=sda	--size=1024		--fsoptions="nosuid,nodev,noexec,noauto"
-part	/boot/efi       --fstype=efi	--ondisk=sda	--size=1024		--fsoptions="nosuid,nodev,noexec,noauto"
-part	/tmp		--fstype=tmpfs			--size=4096		--fsoptions="nosuid,nodev,noexec"
+part	/boot		--fstype=xfs	--ondisk=sda	--size=1024
+part	/boot/efi       --fstype=efi	--ondisk=sda	--size=1024
+part	/tmp		--fstype=tmpfs			--size=4096
 part    swap 				--ondisk=sda	--size=4096
-part    pv.01				--ondisk=sda	--size=1		--grow
+part    pv.01				--ondisk=sda	--size=1	--grow
 volgroup vg_root pv.01
 logvol  /               --vgname=vg_root --size=4096 --name=lv_root
-logvol  /home           --vgname=vg_root --size=4096 --name=lv_home		--fsoptions="nosuid,nodev,noexec"
-logvol  /usr            --vgname=vg_root --size=4096 --name=lv_usr		--fsoptions="nodev"
-logvol  /var            --vgname=vg_root --size=4096 --name=lv_var		--fsoptions="nosuid,nodev,noexec"
-logvol  /var/tmp        --vgname=vg_root --size=4096 --name=lv_var_tmp		--fsoptions="nosuid,nodev,noexec"
-logvol  /var/log        --vgname=vg_root --size=4096 --name=lv_var_log		--fsoptions="nosuid,nodev,noexec"
-logvol  /var/log/audit  --vgname=vg_root --size=4096 --name=lv_var_log_audit	--fsoptions="nosuid,nodev,noexec"
-logvol  /srv            --vgname=vg_root --size=4096 --name=lv_srv		--fsoptions="nosuid,nodev,noexec,ro"
-logvol  /opt            --vgname=vg_root --size=4096 --name=lv_opt		--fsoptions="nosuid,nodev,ro"
+logvol  /home           --vgname=vg_root --size=4096 --name=lv_home
+logvol  /usr            --vgname=vg_root --size=4096 --name=lv_usr
+logvol  /var            --vgname=vg_root --size=4096 --name=lv_var
+logvol  /var/tmp        --vgname=vg_root --size=4096 --name=lv_var_tmp
+logvol  /var/log        --vgname=vg_root --size=4096 --name=lv_var_log	
+logvol  /var/log/audit  --vgname=vg_root --size=4096 --name=lv_var_log_audit
+logvol  /srv            --vgname=vg_root --size=4096 --name=lv_srv
+logvol  /opt            --vgname=vg_root --size=4096 --name=lv_opt
 
 # Locale
 lang en_US.UTF-8
@@ -64,6 +67,7 @@ repo --name=ondisk --baseurl=file:///run/install/sources/mount-0000-cdrom/ondisk
 @^minimal-environment
 @standard
 scap-security-guide
+openssh-server
 %end
 
 # Configure kdump
@@ -84,7 +88,7 @@ scap-security-guide
 passwd --expire root
 passwd --expire admin
 
-# Set the banner !
+# Set the TTY banner
 echo '' > /etc/issue
 echo ' '                                                      >> /etc/issue
 echo '     ___    __                __    _                 ' >> /etc/issue
@@ -95,7 +99,7 @@ echo ' /_/  |_/_/_/ /_/ /_/\__,_/_____/_/_/ /_/\__,_/_/|_|  ' >> /etc/issue
 echo '   ANSSI-BP-028 COMPLIANT'                              >> /etc/issue
 echo ''                                                       >> /etc/issue
 
-# Set it for SSH and cockpit
+# Set the SSH and cockpit banners
 sed -i 's/#Banner none/Banner \/etc\/issue/g'
 cp /etc/issue /etc/issue.cockpit
 
@@ -113,12 +117,19 @@ setsebool -P allow_execstack=off
 setsebool -P secure_mode_insmod=on
 setsebool -P ssh_sysadm_login=off
 
+# The kernel needs to load vfat to boot... I'll fix it later
+echo 'kernel.modules_disabled = 0' > /etc/sysctl.d/ANSSI-BP-028-R24.conf
+
 # Enable the following services
 systemctl enable sshd
 systemctl enable cockpit
 
+# Run a new compliance check
+oscap xccdf eval --profile %SCAP_PROFILE% --results /home/admin/scap-results.xml %SCAP_CONTENT%
+oscap xccdf generate report /home/admin/scap-results.xml > /home/admin/compliance-report.html
+rm /home/admin/scap-results.xml
+
 # Eject the disk
-/usr/bin/eject -i 0
 /usr/bin/eject -r
 
 # Reboot

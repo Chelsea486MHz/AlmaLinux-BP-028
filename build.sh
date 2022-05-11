@@ -29,23 +29,22 @@ ALMA_ARCH="x86_64"
 ALMA_FLAVOR="minimal" #Can be either "minimal", "dvd", or "boot"
 ALMA_URL="${ALMA_MIRROR}/almalinux/${ALMA_RELEASE}/isos/${ALMA_ARCH}/AlmaLinux-${ALMA_RELEASE}-${ALMA_ARCH}-${ALMA_FLAVOR}.iso"
 
+# Build information
+WORKING_DIR=`pwd`
+LOGFILE="${WORKING_DIR}/buildlog.txt"     # Where this script will log stuff
+TMPDIR=`mktemp -d`                        # The temporary work directory
+NEW_ISO_ROOT="${TMPDIR}/isoroot"          # The root of the new ISO to build. Subdir of TMPDIR
+ISO_PATCH_PATH="${WORKING_DIR}/iso-patch" # The content of the directory will be copied to the root of the ISO before building
+
 # Information regarding the local AlmaLinux ISO
-ALMA_LOCAL_DIR="./AlmaLinux"
+ALMA_LOCAL_DIR="${WORKING_DIR}/AlmaLinux"
 ALMA_LOCAL_NAME="AlmaLinux-${ALMA_RELEASE}-${ALMA_ARCH}-${ALMA_FLAVOR}.iso"
 ALMA_LOCAL="${ALMA_LOCAL_DIR}/${ALMA_LOCAL_NAME}"
 
-WORKING_DIR=`pwd`
-LOGFILE="${WORKING_DIR}/buildlog.txt" # Where this script will log stuff
-TMPDIR=`mktemp -d`                    # The temporary work directory
-NEW_ISO_ROOT="${TMPDIR}/isoroot"      # The root of the new ISO to build. Subdir of TMPDIR
-ISO_PATCH_PATH="./iso-patch"          # The content of the directory will be copied to the root of the ISO before building
-
 # Information regarding the ISO patch to apply
 PATH_KICKSTART="kickstart.ks"
-
-# Repositories to create on-disk
-REPO_PATH="${NEW_ISO_ROOT}/ondisk"
-PACKAGES_TO_ADD="scap-security-guide GConf2 openscap openscap-scanner xmlsec1 xmlsec1-openssl aide rsyslog rsyslog-gnutls libestr libfastjson"
+PATH_REPO="${NEW_ISO_ROOT}/ondisk"
+PACKAGES_TO_ADD=`cat packages-to-add.txt`
 
 # OpenSCAP / Compliance As Code (CAC) profile to apply
 SCAP_CONTENT="/usr/share/xml/scap/ssg/content/ssg-almalinux8-ds.xml"
@@ -208,7 +207,7 @@ sed -i "s/%SCAP_ID_XCCDF%/${SCAP_ID_XCCDF}/g" ${NEW_ISO_ROOT}/${PATH_KICKSTART}
 
 # Create the on-disk repo
 echo -n -e "${TEXT_INFO} Creating the on-disk repo..."
-mkdir -p ${REPO_PATH}/Packages
+mkdir -p ${PATH_REPO}/Packages
 if [ $? -ne 0 ]; then
         echo -n -e "${LINE_RESET}"
         echo -e "${TEXT_FAIL} Couldn't create the on-disk repo"
@@ -221,24 +220,9 @@ fi
 
 
 
-# Create the on-disk repo
-echo -n -e "${TEXT_INFO} Creating the repository..."
-mkdir -p ${REPO_PATH}/Packages
-if [ $? -ne 0 ]; then
-        echo -n -e "${LINE_RESET}"
-        echo -e "${TEXT_FAIL} Couldn't create the repository"
-        rm -rf ${TMPDIR}
-        exit 255
-else
-        echo -n -e "${LINE_RESET}"
-        echo -e "${TEXT_SUCC} Created the repository"
-fi
-
-
-
 # Download the packages
 echo -n -e "${TEXT_INFO} Downloading the packages..."
-pushd ${REPO_PATH}/Packages &>> ${LOGFILE}
+pushd ${PATH_REPO}/Packages &>> ${LOGFILE}
 dnf download ${PACKAGES_TO_ADD} &>> ${LOGFILE}
 if [ $? -ne 0 ]; then
         echo -n -e "${LINE_RESET}"
@@ -255,7 +239,7 @@ popd &>> ${LOGFILE}
 
 # Generate the repodata information
 echo -n -e "${TEXT_INFO} Generating the repodata..."
-createrepo ${REPO_PATH} &>> ${LOGFILE}
+createrepo ${PATH_REPO} &>> ${LOGFILE}
 if [ $? -ne 0 ]; then
         echo -n -e "${LINE_RESET}"
         echo -e "${TEXT_FAIL} Couldn't generate the repodata"
@@ -284,7 +268,7 @@ fi
 
 # Rebuild a bootable ISO
 echo -n -e "${TEXT_INFO} Building the new ISO..."
-mkisofs ${MKISOFS_FLAGS} >> ${LOGFILE} &>> ${LOGFILE}
+mkisofs ${MKISOFS_FLAGS} &>> ${LOGFILE}
 if [ $? -ne 0 ]; then
 	echo -n -e "${LINE_RESET}"
 	echo -e "${TEXT_FAIL} Couldn't build the new ISO"
