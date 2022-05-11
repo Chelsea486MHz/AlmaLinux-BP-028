@@ -1,7 +1,3 @@
-###
-### This kickstart configuration install a SENPAI worker node
-###
-
 # Install locally, from CLI
 # (it's fast)
 text
