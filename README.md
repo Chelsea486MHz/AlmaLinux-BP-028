@@ -26,7 +26,7 @@ Run the script. You might want to run it as root if you can't use `mktemp`.
 
 `chmod +x build.sh && ./build.sh`
 
-The resulting
+The resulting image will be generated in the `build` directory, along with its SHA256 checksum.
 
 ## The deployed system
 
