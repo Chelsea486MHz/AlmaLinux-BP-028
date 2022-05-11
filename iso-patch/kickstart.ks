@@ -9,7 +9,7 @@ cdrom
 
 # Manually load the vfat module
 # Dynamic module loading is disabled by sysctl config as required in ANSSI-BP-028-R24
-bootloader --append="rhgb quiet crashkernel=auto vfat"
+bootloader --boot-drive=sda --timeout=0 --append="rhgb quiet crashkernel=auto vfat"
 
 # Automatically accept EULA
 eula --agreed
@@ -58,6 +58,7 @@ network  --bootproto=dhcp --device=enp0s3 --onboot=on --activate --hostname=alma
 firewall --enabled --ssh --port=9090
 
 # User config
+auth --passalgo=sha512 --useshadow
 rootpw root
 user --name=admin --password=admin --groups=wheel
 
@@ -116,6 +117,11 @@ setsebool -P allow_execmem=off
 setsebool -P allow_execstack=off
 setsebool -P secure_mode_insmod=on
 setsebool -P ssh_sysadm_login=off
+
+# I can't believe this one-liner is making it in prod
+# Addresses ANSSI-BP-028-R17
+{python3 -c 'print("password_pbkdf2 root")' &  python3 -c 'import string as s; import secrets as x; a=s.ascii_letters+s.digits; p="".join(x.choice(a) for i in range(64)); print(p + "\n" + p)' | grub2-mkpasswd-pbkdf2 | cut -d ' ' -f 7 | sed -r '/^\s*$/d'} | cat | tr '\n' ' ' >> /etc/grub.d/01_users
+grub2-mkconfig -o /boot/grub2/grub.cfg
 
 # The kernel needs to load vfat to boot... I'll fix it later
 echo 'kernel.modules_disabled = 0' > /etc/sysctl.d/ANSSI-BP-028-R24.conf
