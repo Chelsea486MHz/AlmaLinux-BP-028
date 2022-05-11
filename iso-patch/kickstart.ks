@@ -129,14 +129,6 @@ sed -i '/boot/ s/nodev/nodev,noauto/g' /etc/fstab # /boot
 systemctl enable sshd
 systemctl enable cockpit
 
-# Run a new compliance check
-oscap xccdf eval --profile %SCAP_PROFILE% --results /home/admin/scap-results.xml %SCAP_CONTENT%
-oscap xccdf generate report /home/admin/scap-results.xml > /home/admin/compliance-report.html
-rm /home/admin/scap-results.xml
-
-# Eject the disk
-/usr/bin/eject -r
-
 # Reboot
 reboot
 
