@@ -24,7 +24,7 @@ TEXT_SUCC="[  ${TEXT_GREEN}OK${TEXT_RESET}  ]"
 
 # Information regarding the upstream AlmaLinux ISO
 ALMA_MIRROR="http://mirror.rackspeed.de" #Set it to whichever you want
-ALMA_RELEASE="8.5"
+ALMA_RELEASE="8.6"
 ALMA_ARCH="x86_64"
 ALMA_FLAVOR="minimal" #Can be either "minimal", "dvd", or "boot"
 ALMA_URL="${ALMA_MIRROR}/almalinux/${ALMA_RELEASE}/isos/${ALMA_ARCH}/AlmaLinux-${ALMA_RELEASE}-${ALMA_ARCH}-${ALMA_FLAVOR}.iso"
@@ -42,7 +42,14 @@ ALMA_LOCAL_NAME="AlmaLinux-${ALMA_RELEASE}-${ALMA_ARCH}-${ALMA_FLAVOR}.iso"
 ALMA_LOCAL="${ALMA_LOCAL_DIR}/${ALMA_LOCAL_NAME}"
 
 # Information regarding the ISO patch to apply
-PATH_KICKSTART="kickstart.ks"
+PATH_KICKSTARTS="${WORKING_DIR}/kickstarts"
+PATH_KICKSTART_MAIN="${NEW_ISO_ROOT}/kickstart.ks"
+PATH_KICKSTART_HARD="${NEW_ISO_ROOT}/hardening.ks"
+PATH_KICKSTART_SCAP="${NEW_ISO_ROOT}/openscap.ks"
+PATH_KICKSTART_PACK="${NEW_ISO_ROOT}/packages.ks"
+PATH_KICKSTART_PART="${NEW_ISO_ROOT}/partitioning.ks"
+PATH_KICKSTART_POST="${NEW_ISO_ROOT}/post.ks"
+PATH_KICKSTART_USER="${NEW_ISO_ROOT}/users.ks"
 PATH_REPO="${NEW_ISO_ROOT}/ondisk"
 PACKAGES_TO_ADD=`cat packages-to-add.txt`
 
@@ -94,7 +101,7 @@ echo ' / ___ |/ / / / / / / /_/ / /___/ / / / / /_/ />  <  '
 echo '/_/  |_/_/_/ /_/ /_/\__,_/_____/_/_/ /_/\__,_/_/|_|  '
 echo ' ANSSI-BP-028 COMPLIANT'
 echo ' '
-echo "=> Builds an ANSSI-BP-028 compliant installation ISO from AlmaLinux 8.5"
+echo "=> Builds an ANSSI-BP-028 compliant installation ISO from AlmaLinux 8.6"
 echo "=> AlmaLinux: https://almalinux.org/"
 echo ' '
 
@@ -182,26 +189,61 @@ fi
 
 
 
-# Customize the patch
-echo -e "${TEXT_INFO} Configuring MBR/BIOS boot..."
+####
+#### KICKSTARTS
+####
+
+
+
+# Copy the kickstarts
+echo -n -e "${TEXT_INFO} Installing the kickstarts..."
+cp -r ${ISO_PATCH_PATH}/* ${NEW_ISO_ROOT}/
+if [ $? -ne 0 ]; then
+        echo -n 0e "${LINE_RESET}"
+        echo -e "${TEXT_FAIL} Failed to install the kickstarts"
+        rm -rf ${TMPDIR}
+        exit 255
+else
+        echo -n -e "${LINE_RESET}"
+        echo -e "${TEXT_SUCC} Installed the kickstarts"
+fi
+
+
+
+# Configure the kickstarts
+
+echo -e "${TEXT_INFO} Starting kickstart configuration..."
+
+# Configure the OpenSCAP kickstart
+sed -i "s/%SCAP_PROFILE%/${SCAP_PROFILE}/g" ${NEW_ISO_ROOT}/${PATH_KICKSTART_SCAP}
+sed -i "s|%SCAP_CONTENT%|${SCAP_CONTENT}|g" ${NEW_ISO_ROOT}/${PATH_KICKSTART_SCAP}
+sed -i "s/%SCAP_ID_DATASTREAM%/${SCAP_ID_DATASTREAM}/g" ${NEW_ISO_ROOT}/${PATH_KICKSTART_SCAP}
+sed -i "s/%SCAP_ID_XCCDF%/${SCAP_ID_XCCDF}/g" ${NEW_ISO_ROOT}/${PATH_KICKSTART_SCAP}
+echo -e "${TEXT_SUCC} => Configured the OpenSCAP kickstart"
+
+# Configure the packages kickstart
+sed -i "S/%PACKAGES_TO_ADD%/${PACKAGES_TO_ADD}" ${NEW_ISO_ROOT}/${PATH_KICKSTART_PACK}
+echo -e "${TEXT_SUCC} => Configured the packaging kickstart"
+
+# We're done
+echo -e "${TEXT_SUCC} Configured all kickstarts"
+
+
+
+# Configure ISOLINUX
 sed -i "s/%NEW_ISO_LABEL%/${NEW_ISO_LABEL}/g" ${NEW_ISO_ROOT}/isolinux/isolinux.cfg
 sed -i "s/%PATH_KICKSTART%/${PATH_KICKSTART}/g" ${NEW_ISO_ROOT}/isolinux/isolinux.cfg
 sed -i "s/%ALMA_VERSION%/${ALMA_RELEASE}/g" ${NEW_ISO_ROOT}/isolinux/isolinux.cfg
-
 sed -i "s/%NEW_ISO_LABEL%/${NEW_ISO_LABEL}/g" ${NEW_ISO_ROOT}/isolinux/grub.conf
 sed -i "s/%PATH_KICKSTART%/${PATH_KICKSTART}/g" ${NEW_ISO_ROOT}/isolinux/grub.conf
 sed -i "s/%ALMA_VERSION%/${ALMA_RELEASE}/g" ${NEW_ISO_ROOT}/isolinux/grub.conf
+echo -e "${TEXT_SUCC} Configured ISOLINUX"
 
-echo -e "${TEXT_INFO} Configuring GPT/UEFI boot..."
+# Configure GRUB2
 sed -i "s/%NEW_ISO_LABEL%/${NEW_ISO_LABEL}/g" ${NEW_ISO_ROOT}/EFI/BOOT/grub.cfg
 sed -i "s/%PATH_KICKSTART%/${PATH_KICKSTART}/g" ${NEW_ISO_ROOT}/EFI/BOOT/grub.cfg
 sed -i "s/%ALMA_VERSION%/${ALMA_RELEASE}/g" ${NEW_ISO_ROOT}/EFI/BOOT/grub.cfg
-
-echo -e "${TEXT_INFO} Configuring the kickstart..."
-sed -i "s/%SCAP_PROFILE%/${SCAP_PROFILE}/g" ${NEW_ISO_ROOT}/${PATH_KICKSTART}
-sed -i "s|%SCAP_CONTENT%|${SCAP_CONTENT}|g" ${NEW_ISO_ROOT}/${PATH_KICKSTART}
-sed -i "s/%SCAP_ID_DATASTREAM%/${SCAP_ID_DATASTREAM}/g" ${NEW_ISO_ROOT}/${PATH_KICKSTART}
-sed -i "s/%SCAP_ID_XCCDF%/${SCAP_ID_XCCDF}/g" ${NEW_ISO_ROOT}/${PATH_KICKSTART}
+echo -e "${TEXT_SUCC} Configured GRUB2"
 
 
 
