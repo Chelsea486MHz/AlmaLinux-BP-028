@@ -60,7 +60,7 @@ SCAP_ID_XCCDF="scap_org.open-scap_cref_ssg-almalinux8-xccdf-1.2.xml"
 SCAP_PROFILE="xccdf_org.ssgproject.content_profile_anssi_bp28_high"
 
 # Information regarding the to-be-built ISO
-NEW_ISO_VERSION="8.5"
+NEW_ISO_VERSION="${ALMA_RELEASE}"
 NEW_ISO_RELEASE="1"
 NEW_ISO_ARCH="x86_64"
 NEW_ISO_LABEL="AlmaLinux-ANSSI-BP-028"
@@ -228,16 +228,16 @@ echo -e "${TEXT_SUCC} Configured all kickstarts"
 
 # Configure ISOLINUX
 sed -i "s/%NEW_ISO_LABEL%/${NEW_ISO_LABEL}/g" ${NEW_ISO_ROOT}/isolinux/isolinux.cfg
-sed -i "s/%PATH_KICKSTART%/${PATH_KICKSTART}/g" ${NEW_ISO_ROOT}/isolinux/isolinux.cfg
+sed -i "s/%PATH_KICKSTART_MAIN%/${PATH_KICKSTART_MAIN}/g" ${NEW_ISO_ROOT}/isolinux/isolinux.cfg
 sed -i "s/%ALMA_VERSION%/${ALMA_RELEASE}/g" ${NEW_ISO_ROOT}/isolinux/isolinux.cfg
 sed -i "s/%NEW_ISO_LABEL%/${NEW_ISO_LABEL}/g" ${NEW_ISO_ROOT}/isolinux/grub.conf
-sed -i "s/%PATH_KICKSTART%/${PATH_KICKSTART}/g" ${NEW_ISO_ROOT}/isolinux/grub.conf
+sed -i "s/%PATH_KICKSTART_MAIN%/${PATH_KICKSTART_MAIN}/g" ${NEW_ISO_ROOT}/isolinux/grub.conf
 sed -i "s/%ALMA_VERSION%/${ALMA_RELEASE}/g" ${NEW_ISO_ROOT}/isolinux/grub.conf
 echo -e "${TEXT_SUCC} Configured ISOLINUX"
 
 # Configure GRUB2
 sed -i "s/%NEW_ISO_LABEL%/${NEW_ISO_LABEL}/g" ${NEW_ISO_ROOT}/EFI/BOOT/grub.cfg
-sed -i "s/%PATH_KICKSTART%/${PATH_KICKSTART}/g" ${NEW_ISO_ROOT}/EFI/BOOT/grub.cfg
+sed -i "s/%PATH_KICKSTART_MAIN%/${PATH_KICKSTART_MAIN}/g" ${NEW_ISO_ROOT}/EFI/BOOT/grub.cfg
 sed -i "s/%ALMA_VERSION%/${ALMA_RELEASE}/g" ${NEW_ISO_ROOT}/EFI/BOOT/grub.cfg
 echo -e "${TEXT_SUCC} Configured GRUB2"
 
