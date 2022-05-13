@@ -197,7 +197,7 @@ fi
 
 # Copy the kickstarts
 echo -n -e "${TEXT_INFO} Installing the kickstarts..."
-cp -r ${ISO_PATCH_PATH}/* ${NEW_ISO_ROOT}/
+cp -r ${PATH_KICKSTARTS}/*.ks ${NEW_ISO_ROOT}/
 if [ $? -ne 0 ]; then
         echo -n 0e "${LINE_RESET}"
         echo -e "${TEXT_FAIL} Failed to install the kickstarts"
@@ -215,15 +215,11 @@ fi
 echo -e "${TEXT_INFO} Starting kickstart configuration..."
 
 # Configure the OpenSCAP kickstart
-sed -i "s/%SCAP_PROFILE%/${SCAP_PROFILE}/g" ${NEW_ISO_ROOT}/${PATH_KICKSTART_SCAP}
-sed -i "s|%SCAP_CONTENT%|${SCAP_CONTENT}|g" ${NEW_ISO_ROOT}/${PATH_KICKSTART_SCAP}
-sed -i "s/%SCAP_ID_DATASTREAM%/${SCAP_ID_DATASTREAM}/g" ${NEW_ISO_ROOT}/${PATH_KICKSTART_SCAP}
-sed -i "s/%SCAP_ID_XCCDF%/${SCAP_ID_XCCDF}/g" ${NEW_ISO_ROOT}/${PATH_KICKSTART_SCAP}
+sed -i "s/%SCAP_PROFILE%/${SCAP_PROFILE}/g" ${PATH_KICKSTART_SCAP}
+sed -i "s|%SCAP_CONTENT%|${SCAP_CONTENT}|g" ${PATH_KICKSTART_SCAP}
+sed -i "s/%SCAP_ID_DATASTREAM%/${SCAP_ID_DATASTREAM}/g" ${PATH_KICKSTART_SCAP}
+sed -i "s/%SCAP_ID_XCCDF%/${SCAP_ID_XCCDF}/g" ${PATH_KICKSTART_SCAP}
 echo -e "${TEXT_SUCC} => Configured the OpenSCAP kickstart"
-
-# Configure the packages kickstart
-sed -i "S/%PACKAGES_TO_ADD%/${PACKAGES_TO_ADD}" ${NEW_ISO_ROOT}/${PATH_KICKSTART_PACK}
-echo -e "${TEXT_SUCC} => Configured the packaging kickstart"
 
 # We're done
 echo -e "${TEXT_SUCC} Configured all kickstarts"

@@ -3,5 +3,6 @@ repo --name=ondisk --baseurl=file:///run/install/sources/mount-0000-cdrom/ondisk
 %packages --excludedocs
 @^minimal-environment
 @standard
-%PACKAGES_TO_ADD%
+scap-security-guide
+openssh-server
 %end
