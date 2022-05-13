@@ -228,16 +228,16 @@ echo -e "${TEXT_SUCC} Configured all kickstarts"
 
 # Configure ISOLINUX
 sed -i "s/%NEW_ISO_LABEL%/${NEW_ISO_LABEL}/g" ${NEW_ISO_ROOT}/isolinux/isolinux.cfg
-sed -i "s/%PATH_KICKSTART_MAIN%/${PATH_KICKSTART_MAIN}/g" ${NEW_ISO_ROOT}/isolinux/isolinux.cfg
+sed -i "s/%PATH_KICKSTART_MAIN%/kickstart.ks/g" ${NEW_ISO_ROOT}/isolinux/isolinux.cfg
 sed -i "s/%ALMA_VERSION%/${ALMA_RELEASE}/g" ${NEW_ISO_ROOT}/isolinux/isolinux.cfg
 sed -i "s/%NEW_ISO_LABEL%/${NEW_ISO_LABEL}/g" ${NEW_ISO_ROOT}/isolinux/grub.conf
-sed -i "s/%PATH_KICKSTART_MAIN%/${PATH_KICKSTART_MAIN}/g" ${NEW_ISO_ROOT}/isolinux/grub.conf
+sed -i "s/%PATH_KICKSTART_MAIN%/kickstart.ks/g" ${NEW_ISO_ROOT}/isolinux/grub.conf
 sed -i "s/%ALMA_VERSION%/${ALMA_RELEASE}/g" ${NEW_ISO_ROOT}/isolinux/grub.conf
 echo -e "${TEXT_SUCC} Configured ISOLINUX"
 
 # Configure GRUB2
 sed -i "s/%NEW_ISO_LABEL%/${NEW_ISO_LABEL}/g" ${NEW_ISO_ROOT}/EFI/BOOT/grub.cfg
-sed -i "s/%PATH_KICKSTART_MAIN%/${PATH_KICKSTART_MAIN}/g" ${NEW_ISO_ROOT}/EFI/BOOT/grub.cfg
+sed -i "s/%PATH_KICKSTART_MAIN%/kickstart.ks/g" ${NEW_ISO_ROOT}/EFI/BOOT/grub.cfg
 sed -i "s/%ALMA_VERSION%/${ALMA_RELEASE}/g" ${NEW_ISO_ROOT}/EFI/BOOT/grub.cfg
 echo -e "${TEXT_SUCC} Configured GRUB2"
 
