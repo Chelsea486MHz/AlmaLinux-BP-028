@@ -34,19 +34,19 @@ network  --bootproto=dhcp --device=enp0s3 --onboot=on --activate --hostname=alma
 firewall --enabled --ssh --port=9090
 
 # Set up the partitions
-%include partitioning.ks
+%include /mnt/install/repo/partitioning.ks
 
 # User config
-%include users.ks
+%include /mnt/install/repo/users.ks
 
 # Package selection
-%include packages.ks
+%include /mnt/install/repo/packages.ks
 
 # OpenSCAP hardening
-%include openscap.ks
+%include /mnt/install/repo/openscap.ks
 
 # Hardening post-install script
-%include hardening.ks
+%include /mnt/install/repo/hardening.ks
 
 # General post-install script
-%include post.ks
+%include /mnt/install/repo/post.ks
