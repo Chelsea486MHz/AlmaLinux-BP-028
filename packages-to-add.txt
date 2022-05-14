@@ -11,3 +11,5 @@ libestr
 openssh-server
 libfastjson
 dnf-automatic
+xml-common
+libxslt
