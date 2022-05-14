@@ -10,3 +10,4 @@ rsyslog-gnutls
 libestr
 openssh-server
 libfastjson
+dnf-automatic
