@@ -13,3 +13,4 @@ libfastjson
 dnf-automatic
 xml-common
 libxslt
+libtool-ltdl
