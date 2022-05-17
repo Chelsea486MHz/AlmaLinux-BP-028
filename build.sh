@@ -52,6 +52,7 @@ PATH_KICKSTART_POST="${NEW_ISO_ROOT}/post.ks"
 PATH_KICKSTART_USER="${NEW_ISO_ROOT}/users.ks"
 PATH_REPO="${NEW_ISO_ROOT}/ondisk"
 PACKAGES_TO_ADD=`cat packages-to-add.txt`
+TARGET_BLOCK_DEVICE="vda" # Use sda if you're not deploying on a VM with virtio storage
 
 # OpenSCAP / Compliance As Code (CAC) profile to apply
 SCAP_CONTENT="/usr/share/xml/scap/ssg/content/ssg-almalinux8-ds.xml"
@@ -214,12 +215,20 @@ fi
 
 echo -e "${TEXT_INFO} Starting kickstart configuration..."
 
+# Configure the main kickstart
+sed -i "s/%TARGET_BLOCK_DEVICE%/${TARGET_BLOCK_DEVICE}/g" ${PATH_KICKSTART_MAIN}
+echo -e "${TEXT_SUCC} => Configured the main kickstart"
+
 # Configure the OpenSCAP kickstart
 sed -i "s/%SCAP_PROFILE%/${SCAP_PROFILE}/g" ${PATH_KICKSTART_SCAP}
 sed -i "s|%SCAP_CONTENT%|${SCAP_CONTENT}|g" ${PATH_KICKSTART_SCAP}
 sed -i "s/%SCAP_ID_DATASTREAM%/${SCAP_ID_DATASTREAM}/g" ${PATH_KICKSTART_SCAP}
 sed -i "s/%SCAP_ID_XCCDF%/${SCAP_ID_XCCDF}/g" ${PATH_KICKSTART_SCAP}
 echo -e "${TEXT_SUCC} => Configured the OpenSCAP kickstart"
+
+# Configure the partitioning kickstart
+sed -i "s/%TARGET_BLOCK_DEVICE%/${TARGET_BLOCK_DEVICE}/g" ${PATH_KICKSTART_PART}
+echo -e "${TEXT_SUCC} => Configured the partitioning kickstart"
 
 # We're done
 echo -e "${TEXT_SUCC} Configured all kickstarts"

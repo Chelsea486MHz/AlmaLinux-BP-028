@@ -3,13 +3,13 @@
 # - ANSSI-BP-028-R43
 # - ANSSI-BP-028-R47
 zerombr
-ignoredisk --only-use=sda
-clearpart --all --initlabel --drives=sda
-part	/boot		--fstype=xfs	--ondisk=sda	--size=1024
-part	/boot/efi       --fstype=efi	--ondisk=sda	--size=1024
+ignoredisk --only-use=%TARGET_BLOCK_DEVICE%
+clearpart --all --initlabel --drives=%TARGET_BLOCK_DEVICE%
+part	/boot		--fstype=xfs	--ondisk=%TARGET_BLOCK_DEVICE%	--size=1024
+part	/boot/efi       --fstype=efi	--ondisk=%TARGET_BLOCK_DEVICE%	--size=1024
 part	/tmp		--fstype=tmpfs			--size=4096
-part    swap 				--ondisk=sda	--size=4096
-part    pv.01				--ondisk=sda	--size=1	--grow
+part    swap 				--ondisk=%TARGET_BLOCK_DEVICE%	--size=4096
+part    pv.01				--ondisk=%TARGET_BLOCK_DEVICE%	--size=1	--grow
 volgroup vg_root pv.01
 logvol  /               --vgname=vg_root --size=4096 --name=lv_root
 logvol  /home           --vgname=vg_root --size=4096 --name=lv_home

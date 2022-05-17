@@ -4,7 +4,7 @@ text
 cdrom
 
 # GRUB2 configuration
-bootloader --boot-drive=sda --timeout=0 --append="rhgb quiet crashkernel=auto"
+bootloader --boot-drive=%TARGET_BLOCK_DEVICE% --timeout=0 --append="rhgb quiet crashkernel=auto"
 
 # Automatically accept EULA
 eula --agreed
