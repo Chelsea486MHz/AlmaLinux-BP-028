@@ -21,7 +21,7 @@ rm -f /etc/issue.d/cockpit
 
 # Enable the following services
 systemctl enable sshd
-systemctl enable cockpit
+systemctl enable cockpit.socket
 
 # Reboot
 reboot
