@@ -68,4 +68,4 @@ An OpenSCAP report (HTML format) can be found at the root of the repository show
 
 ## Known bugs:
 
-* SELinux prevents the firewalld and kdump systemd units from starting. Investigations underway.
+* SELinux prevents the firewalld systemd unit from starting. Investigations underway.
