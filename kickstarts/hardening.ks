@@ -23,7 +23,7 @@ grub2-mkconfig -o /boot/grub2/grub.cfg             # And for BIOS
 grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) iommu=force"
 
 # Addresses ANSSI-BP-028-R36
-sudo chmod 0600 /etc/ssh/*_key
+chmod 0600 /etc/ssh/*_key
 
 # Disables automounting /boot/efi
 sed -i '/efi/ s/nodev/nodev,noauto/g' /etc/fstab
