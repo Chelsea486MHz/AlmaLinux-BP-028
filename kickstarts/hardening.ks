@@ -26,6 +26,6 @@ grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) iommu=force"
 sudo chmod 0600 /etc/ssh/*_key
 
 # Disables automounting /boot/efi
-sed -i '/boot\/efi/ s/nodev/nodev,noauto/g' /etc/fstab
+sed -i '/efi/ s/nodev/nodev,noauto/g' /etc/fstab
 
 %end
