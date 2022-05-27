@@ -28,4 +28,9 @@ sudo chmod 0600 /etc/ssh/*_key
 # Disables automounting /boot/efi
 sed -i '/efi/ s/nodev/nodev,noauto/g' /etc/fstab
 
+# Addresses ANSSI-BP-028-R39
+mkdir -p /etc/tmpfiles.d
+echo 'd       /tmp/tmp-inst 0000 root root - -' > /etc/tmpfiles.d/anssi-bp-028-r39.conf
+echo '/tmp     /tmp/tmp-inst/            level      root,adm' >> /etc/security/namespace.conf
+
 %end
