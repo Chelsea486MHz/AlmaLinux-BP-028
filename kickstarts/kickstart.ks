@@ -31,7 +31,6 @@ selinux --enforcing
 # Enable DHCP, set hostname
 # Allow SSH and Cockpit
 network  --bootproto=dhcp --device=enp0s3 --onboot=on --activate --hostname=alma.lan
-firewall --enabled --ssh --port=9090
 
 # Set up the partitions
 %include /mnt/install/repo/partitioning.ks
