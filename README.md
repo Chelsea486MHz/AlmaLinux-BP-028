@@ -4,7 +4,7 @@ Build a disk image that automatically deploys a minimal AlmaLinux 8.6 installati
 
 The image also installs the packages specified in the `packages-to-add.txt` file located at the root of the repository. The packages are downloaded and packaged in a repository built within the image, so there's no need for any networking during the installation process.
 
-The script has been tested on **Alma Linux 8.5**
+The script has been tested on **Alma Linux 8.6**
 
 Read the official ANSSI guides here:
 
@@ -38,11 +38,9 @@ OpenSSH and Cockpit are installed and running.
 
 ## Compliance
 
-**The deployed system is compliant to the ANSSI-BP-028-HIGH standard at 97%**. The remaining 3% of compliance rely on user configuration that varies on the user infrastructure and needs.
+**The deployed system does not pass all ANSSI-BP-028-HIGH OpenSCAP tests**. The remaining tests rely on user configuration that varies on the user infrastructure and needs to pass successfully.
 
 An OpenSCAP report (HTML format) can be found at the root of the repository showing the system's compliance. However, it does show some false positives:
-
-* **Ensure /boot Located on Separate Partition (R12)**: FALSE POSITIVE. The parition is separate, but has the `noauto` flag so OpenSCAP can't validate the rule.
 
 * **Ensure a dedicated group owns sudo (R57)**: FALSE POSITIVE. You can manually verify this rule with `ls -l /usr/bin | grep sudo`. The group *wheel* owns the binary.
 
@@ -54,18 +52,8 @@ An OpenSCAP report (HTML format) can be found at the root of the repository show
 
 * **Configure CA certificate for rsyslog remote logging (R43)**: It is up to the user to configure the TLS certificates to match their infrastructure.
 
-* **Add noexec option to /boot (R12)**: FALSE POSITIVE. The flag is there, but has the `noauto` flag so OpenSCAP can't validate the rule.
-
-* **Add nosuid option to /boot (R12)**: FALSE POSITIVE. The flag is there, but has the `noauto` flag so OpenSCAP can't validate the rule.
-
 * **Enable the deny_execmem SELinux Boolean (R67)**: FALSE POSITIVE. The boolean is set to on and can be checked with `getsebool -a | grep deny_execmem`.
 
 * **Set SSH Idle Timeout Interval (R29)**: FALSE POSITIVE. The interval is set in the OpenSSH server configuration file.
 
 * **Set SSH Client Alive Count Max (R29)**: FALSE POSITIVE. The count is set in the OpenSSH server configuration file.
-
-* **Configure Polyinstantiation of /tmp Directories (R39)**: Polyinstantiation configuration is not persistent on a TMPFS. The /tmp parition is a TMPFS.
-
-## Known bugs:
-
-* SELinux prevents the firewalld systemd unit from starting. Investigations underway.
