@@ -12,6 +12,10 @@ Read the official ANSSI guides here:
 
 [ANSSI-BP-028 1.2 (EN) (PDF)](https://www.ssi.gouv.fr/uploads/2019/03/linux_configuration-en-v1.2.pdf)
 
+## Contributing
+
+All contributions are welcome! Check out the OpenSCAP report and addresses all the issues you want. Let's get to 100% compliance **together!**
+
 ## Dependencies
 
 The build process requires `createrepo`, `curl`, `xorriso` and `syslinux` from EPEL:
@@ -51,9 +55,3 @@ An OpenSCAP report (HTML format) can be found at the root of the repository show
 * **Configure TLS for rsyslog remote logging (R43)**: It is up to the user to configure the TLS certificates to match their infrastructure.
 
 * **Configure CA certificate for rsyslog remote logging (R43)**: It is up to the user to configure the TLS certificates to match their infrastructure.
-
-* **Enable the deny_execmem SELinux Boolean (R67)**: FALSE POSITIVE. The boolean is set to on and can be checked with `getsebool -a | grep deny_execmem`.
-
-* **Set SSH Idle Timeout Interval (R29)**: FALSE POSITIVE. The interval is set in the OpenSSH server configuration file.
-
-* **Set SSH Client Alive Count Max (R29)**: FALSE POSITIVE. The count is set in the OpenSSH server configuration file.
