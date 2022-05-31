@@ -14,3 +14,4 @@ dnf-automatic
 xml-common
 libxslt
 libtool-ltdl
+authselect-compat

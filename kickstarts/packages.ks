@@ -5,4 +5,5 @@ repo --name=ondisk --baseurl=file:///run/install/sources/mount-0000-cdrom/ondisk
 @standard
 scap-security-guide
 openssh-server
+authselect-compat
 %end

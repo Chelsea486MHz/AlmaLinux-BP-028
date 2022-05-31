@@ -16,6 +16,9 @@ reboot
 skipx
 firstboot --disable
 
+# We use authselect-compat
+authselect --passalgo=sha512 --useshadow
+
 # Locale
 lang en_US.UTF-8
 keyboard us
