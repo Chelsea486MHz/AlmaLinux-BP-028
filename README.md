@@ -42,16 +42,30 @@ OpenSSH and Cockpit are installed and running.
 
 ## Compliance
 
-**The deployed system does not pass all ANSSI-BP-028-HIGH OpenSCAP tests**. The remaining tests rely on user configuration that varies on the user infrastructure and needs to pass successfully.
+**The deployed system does not pass all ANSSI-BP-028-HIGH OpenSCAP tests out of the box.**
 
-An OpenSCAP report (HTML format) can be found at the root of the repository showing the system's compliance. However, it does show some false positives:
+An OpenSCAP report (HTML format) can be found at the root of the repository showing the system's compliance. You can recreate the report by running the following commands on a freshly installed system:
 
-* **Ensure a dedicated group owns sudo (R57)**: FALSE POSITIVE. You can manually verify this rule with `ls -l /usr/bin | grep sudo`. The group *wheel* owns the binary.
+`# oscap xccdf eval --results results.xml --profile xccdf_org.ssgproject.content_profile_anssi_bp28_high /usr/share/xml/scap/ssg/content/ssg-almalinux8-ds-1.2.xml`
 
-* **Explicit arguments in sudo specifications (R63)**: FALSE POSITIVE. As described in the report, false positives happen due to bad parsing of the sudoers file.
+`# oscap xccdf generate report results.xml > report.html`
 
-* **Don't target root user in the sudoers file (R60)**: It is up to the user to configure this file to suit their needs.
+### False positives
 
-* **Configure TLS for rsyslog remote logging (R43)**: It is up to the user to configure the TLS certificates to match their infrastructure.
+These checks are reported as failed, but should be reported as passing. This is due to issues with OpenSCAP.
+
+* **Ensure a dedicated group owns sudo (R57)**: You can manually verify this rule with the following command: `ls -l /usr/bin | grep sudo`. The group *wheel* owns the binary.
+
+* **IOMMU configuration directive (R11)**: You can manually verify iommu usage is enforced with the following command: `dmesg iommu=force`
+
+### Depend on user configuration
+
+The system requires configuration and secrets unique to the user's infrastructure for those checks to pass.
+
+* **Explicit arguments in sudo specifications (R63)**: sudo configuration should be brought in by the user.
+
+* **Don't target root user in the sudoers file (R60)**: sudo configuration should be brought in by the user.
+
+* **Configure TLS for rsyslog remote logging (R43)**: It is up to the user to configure the rsyslog server to match their infrastructure.
 
 * **Configure CA certificate for rsyslog remote logging (R43)**: It is up to the user to configure the TLS certificates to match their infrastructure.
