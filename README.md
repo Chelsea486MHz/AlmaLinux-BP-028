@@ -56,7 +56,7 @@ These checks are reported as failed, but should be reported as passing. This is 
 
 * **Ensure a dedicated group owns sudo (R57)**: You can manually verify this rule with the following command: `ls -l /usr/bin | grep sudo`. The group *wheel* owns the binary.
 
-* **IOMMU configuration directive (R11)**: You can manually verify iommu usage is enforced with the following command: `dmesg iommu=force`
+* **IOMMU configuration directive (R11)**: You can manually verify iommu usage is enforced with the following command: `dmesg | grep iommu=force`
 
 ### Depend on user configuration
 
