@@ -24,7 +24,7 @@ TEXT_SUCC="[  ${TEXT_GREEN}OK${TEXT_RESET}  ]"
 
 # Information regarding the upstream AlmaLinux ISO
 ALMA_MIRROR="http://mirror.rackspeed.de" #Set it to whichever you want
-ALMA_RELEASE="8.6"
+ALMA_RELEASE="9.0"
 ALMA_ARCH="x86_64"
 ALMA_FLAVOR="minimal" #Can be either "minimal", "dvd", or "boot"
 ALMA_URL="${ALMA_MIRROR}/almalinux/${ALMA_RELEASE}/isos/${ALMA_ARCH}/AlmaLinux-${ALMA_RELEASE}-${ALMA_ARCH}-${ALMA_FLAVOR}.iso"
@@ -55,9 +55,9 @@ PACKAGES_TO_ADD=`cat packages-to-add.txt`
 TARGET_BLOCK_DEVICE="sda" # Use vda if you're deploying on a VM with virtio storage
 
 # OpenSCAP / Compliance As Code (CAC) profile to apply
-SCAP_CONTENT="/usr/share/xml/scap/ssg/content/ssg-almalinux8-ds.xml"
-SCAP_ID_DATASTREAM="scap_org.open-scap_datastream_from_xccdf_ssg-almalinux8-xccdf-1.2.xml"
-SCAP_ID_XCCDF="scap_org.open-scap_cref_ssg-almalinux8-xccdf-1.2.xml"
+SCAP_CONTENT="/usr/share/xml/scap/ssg/content/ssg-almalinux9-ds.xml"
+SCAP_ID_DATASTREAM="scap_org.open-scap_datastream_from_xccdf_ssg-almalinux8-xccdf.xml"
+SCAP_ID_XCCDF="scap_org.open-scap_cref_ssg-almalinux8-xccdf.xml"
 SCAP_PROFILE="xccdf_org.ssgproject.content_profile_anssi_bp28_high"
 
 # Information regarding the to-be-built ISO
@@ -102,7 +102,7 @@ echo ' / ___ |/ / / / / / / /_/ / /___/ / / / / /_/ />  <  '
 echo '/_/  |_/_/_/ /_/ /_/\__,_/_____/_/_/ /_/\__,_/_/|_|  '
 echo ' ANSSI-BP-028 COMPLIANT'
 echo ' '
-echo "=> Builds an ANSSI-BP-028 compliant installation ISO from AlmaLinux 8.6"
+echo "=> Builds an ANSSI-BP-028 compliant installation ISO from AlmaLinux 9.0"
 echo "=> AlmaLinux: https://almalinux.org/"
 echo ' '
 
