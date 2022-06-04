@@ -22,7 +22,7 @@ authselect --passalgo=sha512 --useshadow
 # Locale
 lang en_US.UTF-8
 keyboard us
-timezone Etc/UTC --isUtc
+timezone Etc/UTC --utc
 
 # Enable SELinux
 selinux --enforcing
