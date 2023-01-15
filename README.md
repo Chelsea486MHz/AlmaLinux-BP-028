@@ -1,10 +1,10 @@
 # AlmaLinux, ANSSI-BP-028
 
-Build a disk image that automatically deploys a minimal AlmaLinux 9.0 installation secured to ANSSI-BP-028-HIGH compliance. Zero user interaction required from the moment you power on the device to the moment you can log in. Not a single click.
+Build a disk image that automatically deploys a minimal AlmaLinux 9.1 installation secured to ANSSI-BP-028-HIGH compliance. Zero user interaction required from the moment you power on the device to the moment you can log in. Not a single click.
 
 The image also installs the packages specified in the `packages-to-add.txt` file located at the root of the repository. The packages are downloaded and packaged in a repository built within the image, so there's no need for any networking during the installation process.
 
-The script has been tested on **Alma Linux 9.0**
+The script has been tested on **Alma Linux 9.1**
 
 Read the official ANSSI guides here:
 
