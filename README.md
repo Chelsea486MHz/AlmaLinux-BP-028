@@ -16,6 +16,24 @@ Read the official ANSSI guides here:
 
 All contributions are welcome! Check out the OpenSCAP report and addresses all the issues you want. Let's get to 100% compliance **together!**
 
+## Automated build with Docker
+
+The image can be built in an AlmaLinux 9.1 Docker container using the provided Dockerfile.
+
+First pull the `almalinux` Docker image:
+
+`$ docker pull almalinux`
+
+Then build the Docker image for the build environment:
+
+`$ docker build -t almalinux-build-028-9.1-build:latest`
+
+Now run the build process within the build environment:
+
+`$ docker run -v $(pwd):/app almalinux-build-028-9.1-build:latest`
+
+Or simply run the `dockerbuild.sh` script located at the root of the repository to start an automated build process. The generated image will be located in the `build` directory, along with its checksum.
+
 ## Dependencies
 
 The build process requires `createrepo`, `curl`, `xorriso` and `syslinux` from EPEL:

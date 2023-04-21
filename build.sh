@@ -10,9 +10,9 @@ TEXT_RED='\e[31m'
 TEXT_RESET='\e[0m'
 
 # Logs like systemd on startup, it's pretty
-TEXT_INFO="[ ${TEXT_YELLOW}INFO${TEXT_RESET} ]"
-TEXT_FAIL="[${TEXT_RED}FAILED${TEXT_RESET}]"
-TEXT_SUCC="[  ${TEXT_GREEN}OK${TEXT_RESET}  ]"
+TEXT_INFO="[${TEXT_YELLOW}i${TEXT_RESET}]"
+TEXT_FAIL="[${TEXT_RED}-${TEXT_RESET}]"
+TEXT_SUCC="[${TEXT_GREEN}+${TEXT_RESET}]"
 
 
 
@@ -179,7 +179,7 @@ fi
 echo -n -e "${TEXT_INFO} Patching the AlmaLinux ISO..."
 cp -r ${ISO_PATCH_PATH}/* ${NEW_ISO_ROOT}/
 if [ $? -ne 0 ]; then
-	echo -n 0e "${LINE_RESET}"
+	echo -n -e "${LINE_RESET}"
 	echo -e "${TEXT_FAIL} Failed to patch the AlmaLinux ISO"
 	rm -rf ${TMPDIR}
 	exit 255
@@ -200,7 +200,7 @@ fi
 echo -n -e "${TEXT_INFO} Installing the kickstarts..."
 cp -r ${PATH_KICKSTARTS}/*.ks ${NEW_ISO_ROOT}/
 if [ $? -ne 0 ]; then
-        echo -n 0e "${LINE_RESET}"
+        echo -n -e "${LINE_RESET}"
         echo -e "${TEXT_FAIL} Failed to install the kickstarts"
         rm -rf ${TMPDIR}
         exit 255
