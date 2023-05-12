@@ -24,7 +24,7 @@ TEXT_SUCC="[  ${TEXT_GREEN}OK${TEXT_RESET}  ]"
 
 # Information regarding the upstream AlmaLinux ISO
 ALMA_MIRROR="http://mirror.rackspeed.de" #Set it to whichever you want
-ALMA_RELEASE="8.6"
+ALMA_RELEASE="8.7"
 ALMA_ARCH="x86_64"
 ALMA_FLAVOR="minimal" #Can be either "minimal", "dvd", or "boot"
 ALMA_URL="${ALMA_MIRROR}/almalinux/${ALMA_RELEASE}/isos/${ALMA_ARCH}/AlmaLinux-${ALMA_RELEASE}-${ALMA_ARCH}-${ALMA_FLAVOR}.iso"
@@ -102,7 +102,7 @@ echo ' / ___ |/ / / / / / / /_/ / /___/ / / / / /_/ />  <  '
 echo '/_/  |_/_/_/ /_/ /_/\__,_/_____/_/_/ /_/\__,_/_/|_|  '
 echo ' ANSSI-BP-028 COMPLIANT'
 echo ' '
-echo "=> Builds an ANSSI-BP-028 compliant installation ISO from AlmaLinux 8.6"
+echo "=> Builds an ANSSI-BP-028 compliant installation ISO from AlmaLinux 8.7"
 echo "=> AlmaLinux: https://almalinux.org/"
 echo ' '
 
