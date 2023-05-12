@@ -14,7 +14,7 @@ TEXT_INFO="[${TEXT_YELLOW}i${TEXT_RESET}]"
 TEXT_FAIL="[${TEXT_RED}-${TEXT_RESET}]"
 TEXT_SUCC="[${TEXT_GREEN}+${TEXT_RESET}]"
 
-IMAGENAME="almalinux-bp-028-9.2-build:latest"
+IMAGENAME="almalinux-bp-028-9.1-build:latest"
 
 echo -n -e "${TEXT_INFO} Building the Docker build image"
 docker build -t ${IMAGENAME} $(pwd)

@@ -26,11 +26,11 @@ First pull the `almalinux` Docker image:
 
 Then build the Docker image for the build environment:
 
-`$ docker build -t almalinux-build-028-9.1-build:latest`
+`$ docker build -t almalinux-bp-028-9.1-build:latest`
 
 Now run the build process within the build environment:
 
-`$ docker run -v $(pwd):/app almalinux-build-028-9.1-build:latest`
+`$ docker run -v $(pwd):/app almalinux-bp-028-9.1-build:latest`
 
 Or simply run the `dockerbuild.sh` script located at the root of the repository to start an automated build process. The generated image will be located in the `build` directory, along with its checksum.
 
