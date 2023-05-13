@@ -8,6 +8,7 @@ aide
 rsyslog
 rsyslog-gnutls
 libestr
+openssh
 openssh-server
 libfastjson
 dnf-automatic
@@ -15,3 +16,8 @@ xml-common
 libxslt
 libtool-ltdl
 authselect-compat
+kpatch
+chkconfig
+tuned
+cockpit
+cockpit-pcp
