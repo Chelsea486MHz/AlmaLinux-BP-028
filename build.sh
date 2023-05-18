@@ -52,7 +52,7 @@ PATH_KICKSTART_POST="${NEW_ISO_ROOT}/post.ks"
 PATH_KICKSTART_USER="${NEW_ISO_ROOT}/users.ks"
 PATH_REPO="${NEW_ISO_ROOT}/ondisk"
 PACKAGES_TO_ADD=`cat packages-to-add.txt`
-TARGET_BLOCK_DEVICE="sda" # Use vda if you're deploying on a VM with virtio storage
+TARGET_BLOCK_DEVICE="vda" # Use vda if you're deploying on a VM with virtio storage
 
 # OpenSCAP / Compliance As Code (CAC) profile to apply
 SCAP_CONTENT="/usr/share/xml/scap/ssg/content/ssg-almalinux9-ds.xml"
