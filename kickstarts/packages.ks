@@ -6,4 +6,5 @@ repo --name=ondisk --baseurl=file:///run/install/sources/mount-0000-cdrom/ondisk
 scap-security-guide
 openssh-server
 authselect-compat
+qemu-guest-agent
 %end
