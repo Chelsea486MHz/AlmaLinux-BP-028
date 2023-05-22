@@ -4,6 +4,15 @@
 # Mount the EFI partition
 mount /boot/efi
 
+# Use TPM for LUKS2
+# TODO: find volume path
+clevis luks bind -d /dev/??? tpm2 '{"pcr_bank":"sha256","pcr_ids":"0,1,7"}' <<< "temppass"
+clevis luks bind -d /dev/??? tpm2 '{"pcr_bank":"sha256","pcr_ids":"0,1,7"}' <<< "temppass"
+cryptsetup luksRemoveKey /dev/??? <<< "temppass"
+cryptsetup luksRemoveKey /dev/??? <<< "temppass"
+systemctl enable clevis-luks-askpass.path
+dracut -fv --regenerate-all
+
 # ANSSI-BP-028 compliance not brought in by OpenSCAP
 systemctl enable dnf-automatic.timer                                            # Addresses ANSSI-BP-028-R08
 echo 'kernel.modules_disabled = 1' > /etc/sysctl.d/ANSSI-BP-028-R24.conf        # Addresses ANSSI-BP-028-R24

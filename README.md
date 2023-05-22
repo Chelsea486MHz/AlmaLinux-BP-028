@@ -58,6 +58,8 @@ You will have to manually configure `rsyslog` and its certificates to work with 
 
 OpenSSH and Cockpit are installed and running.
 
+The system drive is mostly encrypted in a LUKS2 container, and is automatically decrypted at startup using a TPM2. There is no passphrase to enter.
+
 ## Compliance
 
 **The deployed system does not pass all ANSSI-BP-028-HIGH OpenSCAP tests out of the box.**
