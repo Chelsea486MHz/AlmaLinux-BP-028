@@ -5,11 +5,13 @@
 zerombr
 ignoredisk --only-use=%TARGET_BLOCK_DEVICE%
 clearpart --all --initlabel --drives=%TARGET_BLOCK_DEVICE%
+
 part	/boot		--fstype=xfs	--ondisk=%TARGET_BLOCK_DEVICE%	--size=1024
 part	/boot/efi       --fstype=efi	--ondisk=%TARGET_BLOCK_DEVICE%	--size=1024
 part	/tmp		--fstype=tmpfs			--size=4096
-part    swap 				--ondisk=%TARGET_BLOCK_DEVICE%	--size=4096
-part    pv.01				--ondisk=%TARGET_BLOCK_DEVICE%	--size=1	--grow
+part    swap 				--ondisk=%TARGET_BLOCK_DEVICE%	--size=4096 --encrypted --passphrase=temppass --luks-version=luks2
+part    pv.01				--ondisk=%TARGET_BLOCK_DEVICE%	--size=1 --grow --encrypted --passphrase=temppass --luks-version=luks2
+
 volgroup vg_root pv.01
 logvol  /               --vgname=vg_root --size=10240 --name=lv_root
 logvol  /home           --vgname=vg_root --size=1024 --name=lv_home
