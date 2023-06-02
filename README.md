@@ -1,10 +1,10 @@
 # AlmaLinux, ANSSI-BP-028
 
-Build a disk image that automatically deploys a minimal AlmaLinux 9.1 installation secured to ANSSI-BP-028-HIGH compliance. Zero user interaction required from the moment you power on the device to the moment you can log in. Not a single click.
+Build a disk image that automatically deploys a minimal AlmaLinux 9.2 installation secured to ANSSI-BP-028-HIGH compliance. Zero user interaction required from the moment you power on the device to the moment you can log in. Not a single click.
 
 The image also installs the packages specified in the `packages-to-add.txt` file located at the root of the repository. The packages are downloaded and packaged in a repository built within the image, so there's no need for any networking during the installation process.
 
-The script has been tested on **Alma Linux 9.1**
+The script has been tested on **Alma Linux 9.2**
 
 Read the official ANSSI guides here:
 
@@ -18,7 +18,7 @@ All contributions are welcome! Check out the OpenSCAP report and addresses all t
 
 ## Automated build with Docker
 
-The image can be built in an AlmaLinux 9.1 Docker container using the provided Dockerfile.
+The image can be built in an AlmaLinux 9.2 Docker container using the provided Dockerfile.
 
 First pull the `almalinux` Docker image:
 
@@ -26,11 +26,11 @@ First pull the `almalinux` Docker image:
 
 Then build the Docker image for the build environment:
 
-`$ docker build -t almalinux-bp-028-9.1-build:latest`
+`$ docker build -t almalinux-bp-028-9.2-build:latest`
 
 Now run the build process within the build environment:
 
-`$ docker run -v $(pwd):/app almalinux-bp-028-9.1-build:latest`
+`$ docker run -v $(pwd):/app almalinux-bp-028-9.2-build:latest`
 
 Or simply run the `dockerbuild.sh` script located at the root of the repository to start an automated build process. The generated image will be located in the `build` directory, along with its checksum.
 
