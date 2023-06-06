@@ -1,9 +1,6 @@
 # Post-installation script
 %post --erroronfail
 
-# Mount the EFI partition
-mount /boot/efi
-
 ##
 ## Due to an upstream issue related to TPM binding for LUKS decryption,
 ## the commands removing the temporary password have been commented out.
