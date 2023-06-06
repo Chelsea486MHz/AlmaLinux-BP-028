@@ -32,8 +32,6 @@ Now run the build process within the build environment:
 
 `$ docker run -v $(pwd):/app almalinux-bp-028-9.2-build:latest`
 
-Or simply run the `dockerbuild.sh` script located at the root of the repository to start an automated build process. The generated image will be located in the `build` directory, along with its checksum.
-
 ## Dependencies
 
 The build process requires `createrepo`, `curl`, `xorriso` and `syslinux` from EPEL:
