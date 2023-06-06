@@ -90,14 +90,14 @@ WantedBy=default.target
 EOF
 
 # Create the script called by the systemd unit
-cat << EOF >> /usr/local/sbin/setsebool_insmod.sh
+cat << EOF >> /usr/local/sbin/setsebool_secure_mode_insmod.sh
 #!/bin/bash
 setsebool secure_mode_insmod true
 EOF
 
 # Set the file permissions
-chmod 700 /usr/local/sbin/setsebool_insmod.sh
-chmod 644 /etc/systemd/system/setsebool_insmod.service
+chmod 700 /usr/local/sbin/setsebool_secure_mode_insmod.sh
+chmod 644 /etc/systemd/system/setsebool_secure_mode_insmod.service
 systemctl enable setsebool_insmod.service
 
 # Enable the systemd unit
