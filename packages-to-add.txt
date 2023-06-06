@@ -22,7 +22,7 @@ clevis-luks
 clevis-systemd
 clevis-pin-tpm2
 jq
-libjose.so
+libjose
 jose
 luksmeta
 openssh
