@@ -16,3 +16,8 @@ libxslt
 libtool-ltdl
 authselect-compat
 qemu-guest-agent
+clevis
+clevis-dracut
+clevis-luks
+clevis-systemd
+clevis-tpm2
