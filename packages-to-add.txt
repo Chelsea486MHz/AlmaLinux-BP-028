@@ -11,4 +11,4 @@ libjose
 jose
 luksmeta
 libluksmeta
-libonig5
+oniguruma
