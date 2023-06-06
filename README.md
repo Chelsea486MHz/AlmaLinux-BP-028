@@ -106,4 +106,6 @@ System maintenance should be minimal and depends on the specific needs of your o
 
 Updating the kernel, UEFI firmware, or other components of the TPM chains of trust will lead to changes in PCR values. Such updates therefore require regenerating clevis bindings to account for PCR changes:
 
-`# clevis luks regen -d /dev/nvme0n1... -s 1 tpm2`
+`# clevis luks regen -d /dev/vda3 -s 1 tpm2`
+
+`# clevis luks regen -d /dev/vda4 -s 1 tpm2`
