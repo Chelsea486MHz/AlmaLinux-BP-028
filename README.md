@@ -86,9 +86,9 @@ The system requires configuration and secrets unique to the user's infrastructur
 
 * **TPM decryption setup:** Due to an unidentified upstream issue, automatic TPM decryption must be set up manually after installing the system. To do so, use the password `temppass` to decrypt the disks at boot time, and execute the following commands from a root shell:
 
-`# clevis luks bind -d /dev/vda3 tpm2 '{"pcr_bank":"sha256","pcr_ids":"0,1,2,3,4,5,6,7,9"}' <<< "temppass"`
+`# clevis luks bind -d /dev/vda3 tpm2 '{"pcr_bank":"sha256","pcr_ids":"0,1,2,3,4,5,7,9"}' <<< "temppass"`
 
-`# clevis luks bind -d /dev/vda4 tpm2 '{"pcr_bank":"sha256","pcr_ids":"0,1,2,3,4,5,6,7,9"}' <<< "temppass"`
+`# clevis luks bind -d /dev/vda4 tpm2 '{"pcr_bank":"sha256","pcr_ids":"0,1,2,3,4,5,7,9"}' <<< "temppass"`
 
 `# cryptsetup luksRemoveKey /dev/vda3 <<< "temppass"`
 
