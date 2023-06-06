@@ -10,3 +10,5 @@ jq
 libjose
 jose
 luksmeta
+libluksmeta
+libonig
