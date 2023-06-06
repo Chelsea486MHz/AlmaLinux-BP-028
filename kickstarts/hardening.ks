@@ -4,14 +4,17 @@
 # Mount the EFI partition
 mount /boot/efi
 
-# Use TPM for LUKS2
-# TODO: find volume path
-clevis luks bind -d /dev/%TARGET_BLOCK_DEVICE%3 tpm2 '{"pcr_bank":"sha256","pcr_ids":"0,1,7"}' <<< "temppass"
-clevis luks bind -d /dev/%TARGET_BLOCK_DEVICE%4 tpm2 '{"pcr_bank":"sha256","pcr_ids":"0,1,7"}' <<< "temppass"
-cryptsetup luksRemoveKey /dev/%TARGET_BLOCK_DEVICE%3 <<< "temppass"
-cryptsetup luksRemoveKey /dev/%TARGET_BLOCK_DEVICE%4 <<< "temppass"
-systemctl enable clevis-luks-askpass.path
-dracut -fv --regenerate-all
+##
+## Due to an upstream issue related to TPM binding for LUKS decryption, the following line block has been commented out.
+##
+
+## Use TPM for LUKS2
+#clevis luks bind -d /dev/%TARGET_BLOCK_DEVICE%3 tpm2 '{"pcr_bank":"sha256","pcr_ids":"0,1,7"}' <<< "temppass"
+#clevis luks bind -d /dev/%TARGET_BLOCK_DEVICE%4 tpm2 '{"pcr_bank":"sha256","pcr_ids":"0,1,7"}' <<< "temppass"
+#cryptsetup luksRemoveKey /dev/%TARGET_BLOCK_DEVICE%3 <<< "temppass"
+#cryptsetup luksRemoveKey /dev/%TARGET_BLOCK_DEVICE%4 <<< "temppass"
+#systemctl enable clevis-luks-askpass.path
+#dracut -fv --regenerate-all
 
 # ANSSI-BP-028 compliance not brought in by OpenSCAP
 systemctl enable dnf-automatic.timer                                            # Addresses ANSSI-BP-028-R08

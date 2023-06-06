@@ -83,3 +83,27 @@ The system requires configuration and secrets unique to the user's infrastructur
 ### Bugs
 
 * **Set the UEFI Boot Loader Password (R17)**: OpenSCAP reports a failure. Status unknown. To be investigated.
+
+* **TPM decryption setup:** Due to an unidentified upstream issue, automatic TPM decryption must be set up manually after installing the system. To do so, use the password `temppass` to decrypt the disks at boot time, and execute the following commands from a root shell:
+
+`# clevis luks bind -d /dev/vda3 tpm2 '{"pcr_bank":"sha256","pcr_ids":"0,1,7"}' <<< "temppass"`
+
+`# clevis luks bind -d /dev/vda4 tpm2 '{"pcr_bank":"sha256","pcr_ids":"0,1,7"}' <<< "temppass"`
+
+`# cryptsetup luksRemoveKey /dev/vda3 <<< "temppass"`
+
+`# cryptsetup luksRemoveKey /dev/vda4 <<< "temppass"`
+
+`# systemctl enable clevis-luks-askpass.path`
+
+`# dracut -fv --regenerate-all`
+
+Change `vda` to `sda` if you're installing on a bare metal system.
+
+### Maintenance
+
+System maintenance should be minimal and depends on the specific needs of your organization. We do however recommend scheduling automated OpenSCAP compliance checks, and AIDE integrity checks.
+
+Updating the kernel, UEFI firmware, or other components of the TPM chains of trust will lead to changes in PCR values. Such updates therefore require regenerating clevis bindings to account for PCR changes:
+
+`# clevis luks regen -d /dev/nvme0n1... -s 1 tpm2`
