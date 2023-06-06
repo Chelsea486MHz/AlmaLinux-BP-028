@@ -20,4 +20,4 @@ clevis
 clevis-dracut
 clevis-luks
 clevis-systemd
-clevis-tpm2
+clevis-pin-tpm2

@@ -8,7 +8,7 @@ openssh-server
 authselect-compat
 qemu-guest-agent
 clevis
-clevis-tpm2
+clevis-pin-tpm2
 clevis-luks
 clevis-dracut
 clevis-systemd
