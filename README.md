@@ -1,10 +1,14 @@
-# AlmaLinux, ANSSI-BP-028
+# AlmaLinux 9.2 server, secured to ANSSI-BP-028-HIGH
 
-Build a disk image that automatically deploys a minimal AlmaLinux 9.2 installation secured to ANSSI-BP-028-HIGH compliance. Zero user interaction required from the moment you power on the device to the moment you can log in. Not a single click.
+This repository is a set of scripts used to build an ISO format installation image that automatically installsa secured AlmaLinux 9.2 system, without any user interaction.
 
-The image also installs the packages specified in the `packages-to-add.txt` file located at the root of the repository. The packages are downloaded and packaged in a repository built within the image, so there's no need for any networking during the installation process.
+This fork of AlmaLinux is aimed at VirtIO virtualised servers and features TPM disk encryption as well as compliance to ANSSI-BP-028-HIGH, the highest standard of Linux security in the French cybersecurity administration, but also quality of life features like web management and system administration through Cockpit.
 
-The script has been tested on **Alma Linux 9.2**
+By simply inserting this installation image in your virtualization hypervisor, you can deploy extremely secure servers on which to run your services. Maintenance is minimal.
+
+By forking this repository and modifying it to your needs, you can deploy infinitely customizable secure servers.
+
+The installation process requires no user interaction and no network connectivity.
 
 Read the official ANSSI guides here:
 
@@ -42,11 +46,7 @@ The build process requires `createrepo`, `curl`, `xorriso` and `syslinux` from E
 
 ## Usage
 
-Run the script. You might want to run it as root if you can't use `mktemp`.
-
-`chmod +x build.sh && ./build.sh`
-
-The resulting image will be generated in the `build` directory, along with its SHA256 checksum.
+Build the image and insert it in your virtualization hypervisor.
 
 ## The deployed system
 
