@@ -1,6 +1,6 @@
 # AlmaLinux 9.2 server, secured to ANSSI-BP-028-HIGH
 
-This repository is a set of scripts used to build an ISO format installation image that automatically installsa secured AlmaLinux 9.2 system, without any user interaction.
+This repository is a set of scripts used to build an ISO format installation image that automatically installs a secured AlmaLinux 9.2 system, without any user interaction.
 
 This fork of AlmaLinux is aimed at VirtIO virtualised servers and features TPM disk encryption as well as compliance to ANSSI-BP-028-HIGH, the highest standard of Linux security in the French cybersecurity administration, but also quality of life features like web management and system administration through Cockpit.
 

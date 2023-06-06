@@ -75,14 +75,14 @@ rm res.xml
 setsebool -P secure_mode_insmod=off
 
 # Create the systemd unit
-cat << EOF >> /etc/systemd/system/setsebool_secure_mod_insmod.service
+cat << EOF >> /etc/systemd/system/setsebool_secure_mode_insmod.service
 [Unit]
 Description=Enable SELinux boolean secure_mode_insmod
 After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/local/sbin/setsebool_insmod.sh
+ExecStart=/usr/local/sbin/setsebool_secure_mode_insmod.sh
 TimeoutStartSec=0
 
 [Install]
@@ -92,13 +92,12 @@ EOF
 # Create the script called by the systemd unit
 cat << EOF >> /usr/local/sbin/setsebool_secure_mode_insmod.sh
 #!/bin/bash
-setsebool secure_mode_insmod true
+setsebool secure_mode_insmod=on
 EOF
 
 # Set the file permissions
 chmod 700 /usr/local/sbin/setsebool_secure_mode_insmod.sh
 chmod 644 /etc/systemd/system/setsebool_secure_mode_insmod.service
-systemctl enable setsebool_insmod.service
 
 # Enable the systemd unit
 systemctl enable setsebool_secure_mode_insmod.service
