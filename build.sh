@@ -227,6 +227,7 @@ sed -i "s/%SCAP_ID_XCCDF%/${SCAP_ID_XCCDF}/g" ${PATH_KICKSTART_SCAP}
 echo -e "${TEXT_SUCC} => Configured the OpenSCAP kickstart"
 
 # Configure the hardening kickstart
+sed -i "s/%TARGET_BLOCK_DEVICE%/${TARGET_BLOCK_DEVICE}/g" ${PATH_KICKSTART_HARD}
 sed -i "s/%SCAP_PROFILE%/${SCAP_PROFILE}/g" ${PATH_KICKSTART_HARD}
 sed -i "s|%SCAP_CONTENT%|${SCAP_CONTENT}|g" ${PATH_KICKSTART_HARD}
 echo -e "${TEXT_SUCC} => Configured the hardening kickstart"

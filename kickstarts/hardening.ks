@@ -6,10 +6,10 @@ mount /boot/efi
 
 # Use TPM for LUKS2
 # TODO: find volume path
-clevis luks bind -d /dev/??? tpm2 '{"pcr_bank":"sha256","pcr_ids":"0,1,7"}' <<< "temppass"
-clevis luks bind -d /dev/??? tpm2 '{"pcr_bank":"sha256","pcr_ids":"0,1,7"}' <<< "temppass"
-cryptsetup luksRemoveKey /dev/??? <<< "temppass"
-cryptsetup luksRemoveKey /dev/??? <<< "temppass"
+clevis luks bind -d /dev/%TARGET_BLOCK_DEVICE%3 tpm2 '{"pcr_bank":"sha256","pcr_ids":"0,1,7"}' <<< "temppass"
+clevis luks bind -d /dev/%TARGET_BLOCK_DEVICE%4 tpm2 '{"pcr_bank":"sha256","pcr_ids":"0,1,7"}' <<< "temppass"
+cryptsetup luksRemoveKey /dev/%TARGET_BLOCK_DEVICE%3 <<< "temppass"
+cryptsetup luksRemoveKey /dev/%TARGET_BLOCK_DEVICE%4 <<< "temppass"
 systemctl enable clevis-luks-askpass.path
 dracut -fv --regenerate-all
 
