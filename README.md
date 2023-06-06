@@ -68,6 +68,10 @@ An OpenSCAP report (HTML format) can be found at the root of the repository show
 
 `# oscap xccdf generate report results.xml > report.html`
 
+Note that compliance to ANSSI-BP-028-R67 requires setting the `secure_mode_insmod` variable, which prevents loading kernel modules required by the secure system. The reasoning behind this rule is that the kernel should be compiled according to the orginization's needs, which can be done on Debian (the distribution which is culturally ingrained in ANSSI and French government OPSEC/INFOSEC, see the DGAC secure OS project "inseca" based on Debian) but cannot be done on Red Hat Entreprise Linux due to massive backporting in the kernel.
+
+To allow both critical kernel module operation while maintaining compliance to the rule, the variable is globally set to be FALSE. A systemd unit sets it to TRUE at startup, after the modules have been loaded.
+
 ### Depend on user configuration
 
 The system requires configuration and secrets unique to the user's infrastructure for those checks to pass.

@@ -26,11 +26,12 @@ groupadd wheel
 chown root:wheel /usr/bin/sudo
 
 # Addresses ANSSI-BP-028-R67
+# Note: secure_mode_insmod is dealt with
+# later in this file.
 setsebool -P deny_execmem=on
 setsebool -P allow_execheap=off
 setsebool -P allow_execmem=off
 setsebool -P allow_execstack=off
-setsebool -P secure_mode_insmod=on
 setsebool -P ssh_sysadm_login=off
 
 # I can't believe this one-liner is making it in prod
@@ -63,5 +64,46 @@ sed -i '/rounds=65536/ s/$/ remember=2/' /etc/pam.d/system-auth
 # Extra remediation
 oscap xccdf eval --remediate --results res.xml --profile %SCAP_PROFILE% %SCAP_CONTENT%
 rm res.xml
+
+##
+## We will need to load some kernel modules (like dm_mod for clevis)
+## ANSSI-BP-028-R67 forbids this by setting the SELinux variable "secure_mode_insmod".
+##
+## The solution is to set the variable to false globally, then at boot-time, set it to
+## true using a systemd unit. This allows critical modules to be loaded will maintaining
+## security compliance at runtime.
+##
+
+# Disable the setting globally
+setsebool -P secure_mode_insmod=off
+
+# Create the systemd unit
+cat << EOF >> /etc/systemd/system/setsebool_secure_mod_insmod.service
+[Unit]
+Description=Enable SELinux boolean secure_mode_insmod
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/sbin/setsebool_insmod.sh
+TimeoutStartSec=0
+
+[Install]
+WantedBy=default.target
+EOF
+
+# Create the script called by the systemd unit
+cat << EOF >> /usr/local/sbin/setsebool_insmod.sh
+#!/bin/bash
+setsebool secure_mode_insmod true
+EOF
+
+# Set the file permissions
+chmod 700 /usr/local/sbin/setsebool_insmod.sh
+chmod 644 /etc/systemd/system/setsebool_insmod.service
+systemctl enable setsebool_insmod.service
+
+# Enable the systemd unit
+systemctl enable setsebool_secure_mode_insmod.service
 
 %end
