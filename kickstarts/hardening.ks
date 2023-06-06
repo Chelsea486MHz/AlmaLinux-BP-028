@@ -13,8 +13,8 @@ mount /boot/efi
 #clevis luks bind -d /dev/%TARGET_BLOCK_DEVICE%4 tpm2 '{"pcr_bank":"sha256","pcr_ids":"0,1,7"}' <<< "temppass"
 #cryptsetup luksRemoveKey /dev/%TARGET_BLOCK_DEVICE%3 <<< "temppass"
 #cryptsetup luksRemoveKey /dev/%TARGET_BLOCK_DEVICE%4 <<< "temppass"
-#systemctl enable clevis-luks-askpass.path
-#dracut -fv --regenerate-all
+systemctl enable clevis-luks-askpass.path
+dracut -fv --regenerate-all
 
 # ANSSI-BP-028 compliance not brought in by OpenSCAP
 systemctl enable dnf-automatic.timer                                            # Addresses ANSSI-BP-028-R08

@@ -90,11 +90,11 @@ The system requires configuration and secrets unique to the user's infrastructur
 
 `# clevis luks bind -d /dev/vda4 tpm2 '{"pcr_bank":"sha256","pcr_ids":"0,1,2,3,4,5,7,9"}' <<< "temppass"`
 
+You can then remove the temporary LUKS password by using the following commands:
+
 `# cryptsetup luksRemoveKey /dev/vda3 <<< "temppass"`
 
 `# cryptsetup luksRemoveKey /dev/vda4 <<< "temppass"`
-
-`# systemctl enable clevis-luks-askpass.path`
 
 Change `vda` to `sda` if you're installing on a bare metal system.
 
