@@ -96,8 +96,6 @@ The system requires configuration and secrets unique to the user's infrastructur
 
 `# systemctl enable clevis-luks-askpass.path`
 
-`# dracut -fv --regenerate-all`
-
 Change `vda` to `sda` if you're installing on a bare metal system.
 
 ### Maintenance
