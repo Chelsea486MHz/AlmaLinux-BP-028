@@ -5,7 +5,6 @@ clevis
 clevis-dracut
 clevis-luks
 clevis-systemd
-clevis-pin-tpm2
 jq
 libjose
 jose
