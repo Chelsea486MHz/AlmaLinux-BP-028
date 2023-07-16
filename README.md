@@ -1,8 +1,8 @@
-# AlmaLinux 9.2 server, secured to ANSSI-BP-028-HIGH
+# AlmaLinux 9.2 server, secured to ANSSI-BP-028-ENHANCED
 
 This repository is a set of scripts used to build an ISO format installation image that automatically installs a secured AlmaLinux 9.2 system, without any user interaction.
 
-This fork of AlmaLinux is aimed at VirtIO virtualised servers and features TPM disk encryption as well as compliance to ANSSI-BP-028-HIGH, the highest standard of Linux security in the French cybersecurity administration, but also quality of life features like web management and system administration through Cockpit.
+This fork of AlmaLinux is aimed at VirtIO virtualised servers and features TPM disk encryption as well as compliance to ANSSI-BP-028-ENHANCED, the highest standard of Linux security in the French cybersecurity administration, but also quality of life features like web management and system administration through Cockpit.
 
 By simply inserting this installation image in your virtualization hypervisor, you can deploy extremely secure servers on which to run your services. Maintenance is minimal.
 
@@ -30,11 +30,11 @@ First pull the `almalinux` Docker image:
 
 Then build the Docker image for the build environment:
 
-`$ docker build -t almalinux-bp-028-9.2-build:latest`
+`$ docker build -t almalinux-bp-028-9.2-build`
 
 Now run the build process within the build environment:
 
-`$ docker run -v $(pwd):/app almalinux-bp-028-9.2-build:latest`
+`$ docker run --rm -v $(pwd):/app almalinux-bp-028-9.2-build`
 
 ## Dependencies
 
@@ -60,47 +60,21 @@ The system drive is mostly encrypted in a LUKS2 container, and is automatically 
 
 ## Compliance
 
-**The deployed system does not pass all ANSSI-BP-028-HIGH OpenSCAP tests out of the box.**
+**The deployed system does not pass all ANSSI-BP-028-ENHANCED OpenSCAP tests out of the box.**
 
 An OpenSCAP report (HTML format) can be found at the root of the repository showing the system's compliance. You can recreate the report by running the following commands on a freshly installed system:
 
-`# oscap xccdf eval --results results.xml --profile xccdf_org.ssgproject.content_profile_anssi_bp28_high /usr/share/xml/scap/ssg/content/ssg-almalinux9-ds.xml`
+`# oscap xccdf eval --results results.xml --profile xccdf_org.ssgproject.content_profile_anssi_bp28_enhanced /usr/share/xml/scap/ssg/content/ssg-almalinux9-ds.xml`
 
 `# oscap xccdf generate report results.xml > report.html`
-
-Note that compliance to ANSSI-BP-028-R67 requires setting the `secure_mode_insmod` variable, which prevents loading kernel modules required by the secure system. The reasoning behind this rule is that the kernel should be compiled according to the orginization's needs, which can be done on Debian (the distribution which is culturally ingrained in ANSSI and French government OPSEC/INFOSEC, see the DGAC secure OS project "inseca" based on Debian) but cannot be done on Red Hat Entreprise Linux due to massive backporting in the kernel.
-
-To allow both critical kernel module operation while maintaining compliance to the rule, the variable is globally set to be FALSE. A systemd unit sets it to TRUE at startup, after the modules have been loaded.
 
 ### Depend on user configuration
 
 The system requires configuration and secrets unique to the user's infrastructure for those checks to pass.
 
-* **Explicit arguments in sudo specifications (R63)**: sudo configuration should be brought in by the user.
-
-* **Don't target root user in the sudoers file (R60)**: sudo configuration should be brought in by the user.
-
-* **Configure TLS for rsyslog remote logging (R43)**: It is up to the user to configure the rsyslog server to match their infrastructure.
-
-* **Configure CA certificate for rsyslog remote logging (R43)**: It is up to the user to configure the TLS certificates to match their infrastructure.
-
 ### Bugs
 
 * **Set the UEFI Boot Loader Password (R17)**: OpenSCAP reports a failure. Status unknown. To be investigated.
-
-* **TPM decryption setup:** Due to an unidentified upstream issue, automatic TPM decryption must be set up manually after installing the system. To do so, use the password `temppass` to decrypt the disks at boot time, and execute the following commands from a root shell:
-
-`# clevis luks bind -d /dev/vda3 tpm2 '{"pcr_bank":"sha256","pcr_ids":"0,1,2,3,4,5,7,9"}' <<< "temppass"`
-
-`# clevis luks bind -d /dev/vda4 tpm2 '{"pcr_bank":"sha256","pcr_ids":"0,1,2,3,4,5,7,9"}' <<< "temppass"`
-
-You can then remove the temporary LUKS password by using the following commands:
-
-`# cryptsetup luksRemoveKey /dev/vda3 <<< "temppass"`
-
-`# cryptsetup luksRemoveKey /dev/vda4 <<< "temppass"`
-
-Change `vda` to `sda` if you're installing on a bare metal system.
 
 ### Maintenance
 

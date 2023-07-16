@@ -23,7 +23,4 @@ rm -f /etc/issue.d/cockpit
 systemctl enable sshd
 systemctl enable cockpit.socket
 
-# Disable firewalld as it requires extra kernel modules
-systemctl disable firewalld
-
 %end
