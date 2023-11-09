@@ -1,13 +1,3 @@
 GConf2
 authselect-compat
 qemu-guest-agent
-clevis
-clevis-dracut
-clevis-luks
-clevis-systemd
-jq
-libjose
-jose
-luksmeta
-libluksmeta
-oniguruma

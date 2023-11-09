@@ -2,7 +2,7 @@
 
 This repository is a set of scripts used to build an ISO format installation image that automatically installs a secured AlmaLinux 9.2 system, without any user interaction.
 
-This fork of AlmaLinux is aimed at VirtIO virtualised servers and features TPM disk encryption as well as compliance to ANSSI-BP-028-ENHANCED, the highest standard of Linux security in the French cybersecurity administration, but also quality of life features like web management and system administration through Cockpit.
+This fork of AlmaLinux is aimed at VirtIO virtualised servers and features compliance to ANSSI-BP-028-ENHANCED, the second highest standard of Linux security in the French cybersecurity administration, but also quality of life features like web management and system administration through Cockpit.
 
 By simply inserting this installation image in your virtualization hypervisor, you can deploy extremely secure servers on which to run your services. Maintenance is minimal.
 
@@ -56,8 +56,6 @@ You will have to manually configure `rsyslog` and its certificates to work with 
 
 OpenSSH and Cockpit are installed and running.
 
-The system drive is mostly encrypted in a LUKS2 container, and is automatically decrypted at startup using a TPM2. There is no passphrase to enter.
-
 ## Compliance
 
 **The deployed system does not pass all ANSSI-BP-028-ENHANCED OpenSCAP tests out of the box.**
@@ -79,9 +77,3 @@ The system requires configuration and secrets unique to the user's infrastructur
 ### Maintenance
 
 System maintenance should be minimal and depends on the specific needs of your organization. We do however recommend scheduling automated OpenSCAP compliance checks, and AIDE integrity checks.
-
-Updating the kernel, UEFI firmware, or other components of the TPM chains of trust will lead to changes in PCR values. Such updates therefore require regenerating clevis bindings to account for PCR changes:
-
-`# clevis luks regen -d /dev/vda3 -s 1 tpm2`
-
-`# clevis luks regen -d /dev/vda4 -s 1 tpm2`

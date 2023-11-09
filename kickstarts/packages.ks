@@ -7,8 +7,4 @@ scap-security-guide
 openssh-server
 authselect-compat
 qemu-guest-agent
-clevis
-clevis-luks
-clevis-dracut
-clevis-systemd
 %end

@@ -1,19 +1,6 @@
 # Post-installation script
 %post --erroronfail
 
-##
-## Due to an upstream issue related to TPM binding for LUKS decryption,
-## the commands removing the temporary password have been commented out.
-##
-
-## Use TPM for LUKS2
-clevis luks bind -d /dev/%TARGET_BLOCK_DEVICE%3 tpm2 '{"pcr_bank":"sha256","pcr_ids":"0,1,7"}' <<< "temppass"
-clevis luks bind -d /dev/%TARGET_BLOCK_DEVICE%4 tpm2 '{"pcr_bank":"sha256","pcr_ids":"0,1,7"}' <<< "temppass"
-#cryptsetup luksRemoveKey /dev/%TARGET_BLOCK_DEVICE%3 <<< "temppass"
-#cryptsetup luksRemoveKey /dev/%TARGET_BLOCK_DEVICE%4 <<< "temppass"
-systemctl enable clevis-luks-askpass.path
-dracut -fv --regenerate-all
-
 # Addresses ANSSI-BP-028-R08
 systemctl enable dnf-automatic.timer
 
