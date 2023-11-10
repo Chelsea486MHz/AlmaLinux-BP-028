@@ -28,7 +28,7 @@ First pull the `almalinux` Docker image:
 
 Then build the Docker image for the build environment:
 
-`$ docker build -t almalinux-bp-028-9.2-build`
+`$ docker build -t almalinux-bp-028-9.2-build .`
 
 Now run the build process within the build environment:
 
