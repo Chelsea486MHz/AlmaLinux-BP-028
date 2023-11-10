@@ -31,9 +31,8 @@ selinux --enforcing
 %addon com_redhat_kdump --enable --reserve-mb=auto
 %end
 
-# Enable DHCP, set hostname
-# Allow SSH and Cockpit
-network  --bootproto=dhcp --device=enp0s3 --onboot=on --activate --hostname=alma.lan
+# Configure the network connections
+%include /mnt/install/repo/network.ks
 
 # Set up the partitions
 %include /mnt/install/repo/partitioning.ks
