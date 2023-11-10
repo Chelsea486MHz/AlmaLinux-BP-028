@@ -12,9 +12,7 @@ The installation process requires no user interaction and no network connectivit
 
 Read the official ANSSI guides here:
 
-[ANSSI-BP-028 1.2 (FR) (PDF)](https://www.ssi.gouv.fr/uploads/2016/01/linux_configuration-fr-v1.2.pdf)
-
-[ANSSI-BP-028 1.2 (EN) (PDF)](https://www.ssi.gouv.fr/uploads/2019/03/linux_configuration-en-v1.2.pdf)
+[ANSSI-BP-028 2.0 (PDF)](https://www.ssi.gouv.fr/uploads/2019/02/fr_np_linux_configuration-v2.0.pdf)
 
 ## Contributing
 
